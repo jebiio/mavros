@@ -33,6 +33,9 @@
   <class name="global_position" type="mavros::std_plugins::GlobalPositionPlugin" base_class_type="mavros::plugin::PluginBase">
     <description>Publish FCU fused global position and raw GPS fix.</description>
   </class>
+  <class name="setpoint_manual" type="mavros::std_plugins::SetpointManualPlugin" base_class_type="mavros::plugin::PluginBase">
+    <description>Publish manual setpoint.</description>
+  </class>
   <class name="setpoint_position" type="mavros::std_plugins::SetpointPositionPlugin" base_class_type="mavros::plugin::PluginBase">
     <description>Send to FCU external position setpoint.</description>
   </class>
