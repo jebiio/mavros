@@ -43,6 +43,12 @@ namespace mavros {
 	((uasobjptr)->fcu_link)
 
 /**
+ * @brief helper accessor to GCS link interface
+ */
+#define UAS_GCS(uasobjptr)                              \
+	((uasobjptr)->gcs_link)
+
+/**
  * @brief helper accessor to diagnostic updater
  */
 #define UAS_DIAG(uasobjptr)                             \
