@@ -167,7 +167,7 @@ Then install GeographicLib datasets by running the `install_geographiclib_datase
     ./install_geographiclib_datasets.sh
 
 
-### Source installation
+### 소스 설치(Source installation)
 
 Use `wstool` utility for retrieving sources and [`catkin` tool][catkin] for build.
 
@@ -186,7 +186,7 @@ wstool init src
 
 # 2. Install MAVLink
 #    we use the Kinetic reference for all ROS distros as it's not distro-specific and up to date
-rosinstall_generator --rosdistro kinetic mavlink | tee /tmp/mavros.rosinstall
+rosinstall_generator --rosdistro noetic mavlink | tee /tmp/mavros.rosinstall
 
 # 3. Install MAVROS: get source (upstream - released)
 rosinstall_generator --upstream mavros | tee -a /tmp/mavros.rosinstall
@@ -194,6 +194,7 @@ rosinstall_generator --upstream mavros | tee -a /tmp/mavros.rosinstall
 # rosinstall_generator --upstream-development mavros | tee -a /tmp/mavros.rosinstall
 # For fetching all the dependencies into your catkin_ws, just add '--deps' to the above scripts
 # ex: rosinstall_generator --upstream mavros --deps | tee -a /tmp/mavros.rosinstall
+# [mavros.rosinstall](./mavros.rosinstall) 파일로 PC에 있는 /tmp/mavros.rosinstall 파일을 대체하기
 
 # 4. Create workspace & deps
 wstool merge -t src /tmp/mavros.rosinstall
