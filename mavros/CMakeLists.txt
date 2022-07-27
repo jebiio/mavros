@@ -148,7 +148,7 @@ add_library(mavros_plugins
   src/plugins/vfr_hud.cpp
   src/plugins/waypoint.cpp
   src/plugins/wind_estimation.cpp
-  src/plugins/kari_status.cpp
+  src/plugins/kriso_status.cpp
 )
 add_dependencies(mavros_plugins
   mavros
