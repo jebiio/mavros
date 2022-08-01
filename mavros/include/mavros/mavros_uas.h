@@ -95,6 +95,11 @@ public:
 	mavconn::MAVConnInterface::Ptr fcu_link;
 
 	/**
+	 * @brief MAVLink GCS conection
+	 */
+	mavconn::MAVConnInterface::Ptr gcs_link;
+	
+	/**
 	 * @brief Mavros diagnostic updater
 	 */
 	diagnostic_updater::Updater diag_updater;

@@ -161,6 +161,7 @@ MavRos::MavRos() :
 			ros::requestShutdown();
 		});
 
+	UAS_GCS(&mav_uas) = gcs_link;
 	if (gcs_link) {
 		// setup GCS link bridge
 		gcs_link->connect([this, fcu_link](const mavlink_message_t *msg, const Framing framing) {

@@ -37,11 +37,15 @@ public:
 		PluginBase::initialize(uas_);
 
 		nh.param<std::string>("frame_id", frame_id, "map");
+		// if(gcs_link != nullptr){
+
+		// }
 		//kriso_status_sub = sp_nh.subscribe("local", 10, &KrisoStatusPlugin::kriso_status_cb, this);
 	}
 
 	Subscriptions get_subscriptions() override
 	{
+		UAS_GCS(m_uas)->send_message_ignore_drop(nullptr);
 		return {
 			//make_handler(&KrisoStatusPlugin::handle_kriso_status),
 		};
