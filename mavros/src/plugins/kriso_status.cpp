@@ -16,10 +16,12 @@
 
 #include <mavros/mavros_plugin.h>
 
+#include <mavros_msgs/KrisoStatus.h>
 //#include <mavros_msgs/krisoStatus.h>
 
 namespace mavros {
 namespace std_plugins {
+using mavlink::common::MAV_FRAME;
 /**
  * @brief KrisoStatusPlugin plugin.
  */
@@ -35,17 +37,16 @@ public:
 	void initialize(UAS &uas_) override
 	{
 		PluginBase::initialize(uas_);
-
 		nh.param<std::string>("frame_id", frame_id, "map");
-		// if(gcs_link != nullptr){
-
-		// }
-		//kriso_status_sub = sp_nh.subscribe("local", 10, &KrisoStatusPlugin::kriso_status_cb, this);
+		
+		kriso_status_sub = nh.subscribe("krisostatus", 10, &KrisoStatusPlugin::hil_state_cb, this);
 	}
 
 	Subscriptions get_subscriptions() override
 	{
-		UAS_GCS(m_uas)->send_message_ignore_drop(nullptr);
+		//ROS_WARN_NAMED("time", "KRISO : KRISO STATUS Received");
+
+		//UAS_GCS(m_uas)->send_message_ignore_drop(nullptr);
 		return {
 			//make_handler(&KrisoStatusPlugin::handle_kriso_status),
 		};
@@ -56,7 +57,22 @@ private:
 	std::string frame_id;
 
 	ros::Subscriber kriso_status_sub;
-//	ros::Publisher kriso_status_pub;
+
+	// void kriso_status_cb(const mavros_msgs::KrisoStatus::ConstPtr &req)
+	// {
+	// 	ROS_WARN_NAMED("time", "KRISO : KRISO STATUS Received");
+	// 	mavlink::common::msg::HIL_STATE hState {};
+	// 	mavlink::common::msg::KRISO_STATUS kStatus{};
+
+	// 	UAS_GCS(m_uas)->send_message_ignore_drop(hState);
+	// }
+
+	void hil_state_cb(const mavros_msgs::KrisoStatus::ConstPtr &req)
+	{
+		//10Hz로 수신하여 GCS로 전송
+		mavlink::common::msg::HIL_STATE hState {};
+		UAS_GCS(m_uas)->send_message_ignore_drop(hState);
+	}
 
 };
 }	// namespace std_plugins

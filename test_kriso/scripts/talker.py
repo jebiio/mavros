@@ -38,25 +38,26 @@
 
 import rospy
 from std_msgs.msg import String
-from test_kriso.msg import KrisoStatus
+from mavros.utils import *
+from mavros_msgs.msg import KrisoStatus as KrisoStatus
 
 def talker():
-    pub = rospy.Publisher('test_kriso_node', KrisoStatus, queue_size=10)
+    pub = rospy.Publisher('mavros/krisostatus', KrisoStatus, queue_size=10)
     rospy.init_node('test_kriso_node', anonymous=True)
     rate = rospy.Rate(10) # 10hz
     msg = KrisoStatus()
-    msg.roll = msg.pitch = msg.yaw = 0.0
+    msg.yaw = msg.pitch =  0.0
     msg.lat = 27.01
-    msg.lon = 126.02
+    msg.lng = 126.02
 
     while not rospy.is_shutdown():
         rospy.loginfo(msg)
         pub.publish(msg)
-        msg.roll += 0.1;
+        # msg.roll += 0.1;
         msg.pitch += 0.2;
         msg.yaw += 0.3;
         msg.lat += 0.01;
-        msg.lon += 0.01;
+        msg.lng += 0.01;
         rate.sleep()
 
 if __name__ == '__main__':
