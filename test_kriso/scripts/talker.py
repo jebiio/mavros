@@ -46,18 +46,16 @@ def talker():
     rospy.init_node('test_kriso_node', anonymous=True)
     rate = rospy.Rate(10) # 10hz
     msg = KrisoStatus()
-    msg.yaw = msg.pitch =  0.0
-    msg.lat = 27.01
-    msg.lng = 126.02
+    msg.nav_mode = 1
+    msg.nav_latitude = 27.01
+    msg.nav_longitude = 126.02
 
     while not rospy.is_shutdown():
         rospy.loginfo(msg)
         pub.publish(msg)
         # msg.roll += 0.1;
-        msg.pitch += 0.2;
-        msg.yaw += 0.3;
-        msg.lat += 0.01;
-        msg.lng += 0.01;
+        msg.nav_latitude+= 0.02
+        msg.nav_longitude+= 0.03
         rate.sleep()
 
 if __name__ == '__main__':

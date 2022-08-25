@@ -6,10 +6,28 @@
 # Altitude information
 #
 # https://mavlink.io/en/messages/common.html#ALTITUDE
-
-std_msgs/Header header
-
-float32 lat
-float32 lng
-float32 yaw
-float32 pitch
+uint8 nav_mode
+float32 nav_roll 
+float32 nav_pitch
+float32 nav_yaw
+float32 nav_cog
+float32 nav_sog
+float32 nav_uspd
+float32 nav_vspd 
+float32 nav_wspd 
+float64 nav_longitude
+float64 nav_latitude
+float32 nav_heave   
+float32 nav_gpstime 
+float32 wea_airtem  
+float32 wea_wattem  
+float32 wea_press   
+float32 wea_relhum   
+float32 wea_dewpt   
+float32 wea_windirt  
+float32 wea_winspdt 
+float32 wea_windirr 
+float32 wea_watspdr 
+float32 wea_watdir  
+float32 wea_watspd  
+float32 wea_visibiran

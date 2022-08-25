@@ -39,7 +39,7 @@ public:
 		PluginBase::initialize(uas_);
 		nh.param<std::string>("frame_id", frame_id, "map");
 		
-		kriso_status_sub = nh.subscribe("krisostatus", 10, &KrisoStatusPlugin::hil_state_cb, this);
+		kriso_status_sub = nh.subscribe("krisostatus", 10, &KrisoStatusPlugin::kriso_status_cb, this);
 	}
 
 	Subscriptions get_subscriptions() override
@@ -67,13 +67,45 @@ private:
 	// 	UAS_GCS(m_uas)->send_message_ignore_drop(hState);
 	// }
 
-	void hil_state_cb(const mavros_msgs::KrisoStatus::ConstPtr &req)
-	{
-		//10Hz로 수신하여 GCS로 전송
-		mavlink::common::msg::HIL_STATE hState {};
-		UAS_GCS(m_uas)->send_message_ignore_drop(hState);
-	}
+	// void hil_state_cb(const mavros_msgs::KrisoStatus::ConstPtr &req)
+	// {
+	// 	//10Hz로 수신하여 GCS로 전송
+	// 	mavlink::common::msg::HIL_STATE hState {};
+	// 	mavlink::common::msg::KRISO_STATUS kStatus{};
+	// 	UAS_GCS(m_uas)->send_message_ignore_drop(hState);
+	// }
 
+	void kriso_status_cb(const mavros_msgs::KrisoStatus::ConstPtr &req){
+		//10Hz로 수신하여 GCS로 전송
+		mavlink::common::msg::KRISO_STATUS kStatus{};
+		kStatus.nav_mode = req->nav_mode;
+		kStatus.nav_roll = req->nav_roll;
+		kStatus.nav_pitch = req->nav_pitch;
+		kStatus.nav_yaw = req->nav_yaw;
+		kStatus.nav_cog = req->nav_cog;
+		kStatus.nav_sog = req->nav_sog;
+		kStatus.nav_uspd = req->nav_uspd;
+		kStatus.nav_vspd = req->nav_vspd;
+		kStatus.nav_wspd = req->nav_wspd;
+		kStatus.nav_longitude = req->nav_longitude;
+		kStatus.nav_latitude = req->nav_latitude;
+		kStatus.nav_heave = req->nav_heave;
+		kStatus.nav_gpstime = req->nav_gpstime;
+		kStatus.wea_airtem = req->wea_airtem;
+		kStatus.wea_wattem = req->wea_wattem; 
+		kStatus.wea_press  = req->wea_press;
+		kStatus.wea_relhum = req->wea_relhum;
+		kStatus.wea_dewpt = req->wea_dewpt;
+		kStatus.wea_windirt = req->wea_windirt;
+		kStatus.wea_winspdt = req->wea_winspdt;
+		kStatus.wea_windirr = req->wea_windirr;
+		kStatus.wea_watspdr = req->wea_watspdr;
+		kStatus.wea_watdir  = req->wea_watdir;
+		kStatus.wea_watspd  = req->wea_watspd;
+		kStatus.wea_visibiran = req->wea_visibiran;
+
+		UAS_GCS(m_uas)->send_message_ignore_drop(kStatus);
+	}
 };
 }	// namespace std_plugins
 }	// namespace mavros
