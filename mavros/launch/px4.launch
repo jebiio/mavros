@@ -2,8 +2,9 @@
 	<!-- vim: set ft=xml noet : -->
 	<!-- example launch script for PX4 based FCU's -->
 
-	<arg name="fcu_url" default="/dev/ttyACM0:57600" />
-	<arg name="gcs_url" default="" />
+	<!-- <arg name="fcu_url" default="/dev/ttyUSB0:921600" /> -->
+	<arg name="fcu_url" default="udp://:14540@192.168.0.18:14557" />
+	<arg name="gcs_url" default="udp://@192.168.0.18:14550" />
 	<arg name="tgt_system" default="1" />
 	<arg name="tgt_component" default="1" />
 	<arg name="log_output" default="screen" />
@@ -22,4 +23,7 @@
 		<arg name="fcu_protocol" value="$(arg fcu_protocol)" />
 		<arg name="respawn_mavros" default="$(arg respawn_mavros)" />
 	</include>
+	
+	<!-- PX4 Status subscribe and publish to kari -->
+	<node name="px4_status_receiver_node" pkg="kari_estimator" type="px4_status_receiver_node" output="screen" />
 </launch>
