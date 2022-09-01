@@ -66,7 +66,8 @@ public:
 		local_velocity_cov = lp_nh.advertise<geometry_msgs::TwistWithCovarianceStamped>("velocity_body_cov", 10);
 		local_accel = lp_nh.advertise<geometry_msgs::AccelWithCovarianceStamped>("accel", 10);
 		local_odom = lp_nh.advertise<nav_msgs::Odometry>("odom",10);
-		kari_local_positon_vel = lp_nh.advertise<geometry_msgs::Vector3Stamped>("kari",10);
+		kari_local_position_vel = lp_nh.advertise<geometry_msgs::Vector3Stamped>("kari_local_position_vel",10);
+		kari_local_position_accel = lp_nh.advertise<geometry_msgs::Vector3Stamped>("kari_local_position_accel",10);
 	}
 
 	Subscriptions get_subscriptions() override {
@@ -87,7 +88,8 @@ private:
 	ros::Publisher local_accel;
 	ros::Publisher local_odom;
 
-	ros::Publisher kari_local_positon_vel; 
+	ros::Publisher kari_local_position_vel; // kari
+	ros::Publisher kari_local_position_accel; // kari
 
 	std::string frame_id;		//!< frame for Pose
 	std::string tf_frame_id;	//!< origin for TF
@@ -114,14 +116,16 @@ private:
 	void handle_local_position_ned(const mavlink::mavlink_message_t *msg, mavlink::common::msg::LOCAL_POSITION_NED &pos_ned)
 	{
 		has_local_position_ned = true;
-
-		//--------------- kari ---------------//
+		
+		// kari 
 		auto vel_ned = boost::make_shared<geometry_msgs::Vector3Stamped>();
 		vel_ned->header =  m_uas->synchronized_header(frame_id, pos_ned.time_boot_ms);
 		vel_ned->vector.x = pos_ned.vx;
 		vel_ned->vector.y = pos_ned.vy;
 		vel_ned->vector.z = pos_ned.vz;
-		kari_local_positon_vel.publish(vel_ned);
+		kari_local_position_vel.publish(vel_ned);
+
+
 
 		//--------------- Transform FCU position and Velocity Data ---------------//
 		auto enu_position = ftf::transform_frame_ned_enu(Eigen::Vector3d(pos_ned.x, pos_ned.y, pos_ned.z));
@@ -238,6 +242,8 @@ private:
 			twist->twist = odom->twist.twist;
 			local_velocity_body.publish(twist);
 
+			ROS_INFO("local_postion_ned is null");
+
 			// publish tf
 			publish_tf(odom);
 		}
@@ -254,6 +260,14 @@ private:
 		accel->accel.covariance[14] = pos_ned.covariance[44];	// az
 
 		local_accel.publish(accel);
+
+		// kari 확인필요
+		// auto kari_aceel_vel = boost::make_shared<geometry_msgs::Vector3Stamped>();
+		// auto accel_vel = Eigen::Vector3d(pos_ned.ax, pos_ned.ay, pos_ned.az);
+		// kari_aceel_vel->header =odom->header;
+		// tf::vectorEigenToMsg(accel_vel, kari_aceel_vel->vector);
+		// kari_local_position_accel.publish(kari_aceel_vel);
+
 	}
 };
 }	// namespace std_plugins

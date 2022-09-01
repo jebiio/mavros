@@ -23,6 +23,7 @@
 #include <sensor_msgs/Temperature.h>
 #include <sensor_msgs/FluidPressure.h>
 #include <geometry_msgs/Vector3.h>
+#include <geometry_msgs/Vector3Stamped.h>
 
 namespace mavros {
 namespace std_plugins {
@@ -90,6 +91,10 @@ public:
 		diff_press_pub = imu_nh.advertise<sensor_msgs::FluidPressure>("diff_pressure", 10);
 		imu_raw_pub = imu_nh.advertise<sensor_msgs::Imu>("data_raw", 10);
 
+		//kari 
+		kari_imu_rpy_pub = imu_nh.advertise<geometry_msgs::Vector3Stamped>("kari_imu_rpy", 10);
+		kari_imu_gyro_pub = imu_nh.advertise<geometry_msgs::Vector3Stamped>("kari_imu_gyro", 10);
+
 		// Reset has_* flags on connection change
 		enable_connection_cb();
 	}
@@ -116,6 +121,9 @@ private:
 	ros::Publisher temp_baro_pub;
 	ros::Publisher static_press_pub;
 	ros::Publisher diff_press_pub;
+
+	ros::Publisher kari_imu_rpy_pub;
+	ros::Publisher kari_imu_gyro_pub;
 
 	bool has_hr_imu;
 	bool has_raw_imu;
@@ -218,6 +226,20 @@ private:
 		// [pub_enu]
 		imu_pub.publish(imu_enu_msg);
 		// [pub_enu]
+
+		// kari 
+		auto kari_rpy = boost::make_shared< geometry_msgs::Vector3Stamped>();
+		auto rpy = ftf::quaternion_to_rpy(orientation_ned);
+		kari_rpy->header = m_uas->synchronized_header("aircraft", time_boot_ms);
+		tf::vectorEigenToMsg(rpy, kari_rpy->vector);
+		kari_imu_rpy_pub.publish(kari_rpy);
+
+		// kari 
+		auto kari_angular_vel = boost::make_shared< geometry_msgs::Vector3Stamped>();
+		kari_angular_vel->header = m_uas->synchronized_header("aircraft", time_boot_ms);
+		tf::vectorEigenToMsg(gyro_frd, kari_angular_vel->vector);
+		kari_imu_gyro_pub.publish(kari_angular_vel);		
+
 	}
 
 	/**
@@ -297,6 +319,10 @@ private:
 		auto gyro_frd = Eigen::Vector3d(att.rollspeed, att.pitchspeed, att.yawspeed);
 		// [frd_ang_vel1]
 
+		// kari 
+		// roll, pitch, yaw
+		// geometry_msgs::Vector3 
+
 		/** The RPY describes the rotation: aircraft->NED.
 		 *  It is required to change this to aircraft->base_link:
 		 *  @snippet src/plugins/imu.cpp ned->baselink->enu
@@ -334,6 +360,9 @@ private:
 		// [ned_aircraft_orient2]
 		auto ned_aircraft_orientation = Eigen::Quaterniond(att_q.q1, att_q.q2, att_q.q3, att_q.q4);
 		// [ned_aircraft_orient2]
+
+		// kari 
+		// auto rpy = ftf::quaternion_to_rpy(ned_aircraft_orientation);
 
 		/** Angular velocity on the NED-aicraft frame:
 		 *  @snippet src/plugins/imu.cpp ned_ang_vel2
