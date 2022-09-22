@@ -94,22 +94,17 @@ private:
 		kStatus.nav_sog = req->nav_sog;
 		kStatus.nav_uspd = req->nav_uspd;
 		kStatus.nav_vspd = req->nav_vspd;
-		kStatus.nav_wspd = req->nav_wspd;
 		kStatus.nav_longitude = req->nav_longitude;
 		kStatus.nav_latitude = req->nav_latitude;
-		kStatus.nav_heave = req->nav_heave;
 		kStatus.nav_gpstime = req->nav_gpstime;
 		kStatus.wea_airtem = req->wea_airtem;
 		kStatus.wea_wattem = req->wea_wattem; 
 		kStatus.wea_press  = req->wea_press;
 		kStatus.wea_relhum = req->wea_relhum;
-		kStatus.wea_dewpt = req->wea_dewpt;
 		kStatus.wea_windirt = req->wea_windirt;
 		kStatus.wea_winspdt = req->wea_winspdt;
-		kStatus.wea_windirr = req->wea_windirr;
-		kStatus.wea_watspdr = req->wea_watspdr;
-		kStatus.wea_watdir  = req->wea_watdir;
-		kStatus.wea_watspd  = req->wea_watspd;
+		kStatus.wea_watdir = req->wea_watdir;
+		kStatus.wea_watspd = req->wea_watspd;
 		kStatus.wea_visibiran = req->wea_visibiran;
 
 		UAS_GCS(m_uas)->send_message_ignore_drop(kStatus);
