@@ -78,6 +78,14 @@ private:
 	void kriso_status_cb(const mavros_msgs::KrisoStatus::ConstPtr &req){
 		//10Hz로 수신하여 GCS로 전송
 		mavlink::common::msg::KRISO_STATUS kStatus{};
+
+		kStatus.t1_rpm = req->t1_rpm;
+		kStatus.t2_rpm = req->t2_rpm;
+		kStatus.t3_rpm = req->t3_rpm;
+		kStatus.t3_angle = req->t3_angle;
+		kStatus.t4_rpm = req->t4_rpm;
+		kStatus.t4_angle = req->t4_angle;
+
 		kStatus.nav_mode = req->nav_mode;
 		kStatus.nav_roll = req->nav_roll;
 		kStatus.nav_pitch = req->nav_pitch;
