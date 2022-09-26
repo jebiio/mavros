@@ -15,13 +15,13 @@ git clone https://github.com/jebiio/mavlink_kriso.git mavlink
 
 cd ~/mavros_ws
 catkin build
-source devel/setup.bash
+source ~/mavros_ws/devel/setup.bash
 echo "source ~/mavros_ws/devel/setup.bash" >> ~/.bashrc
 
 cd ~
 git clone https://github.com/jebiio/kriso_ws.git
 cd ~/kriso_ws
 catkin build
-source devel/setup.bash
+source ~/kriso_ws/devel/setup.bash
 echo "source ~/kriso_ws/devel/setup.bash" >> ~/.bashrc
 
