@@ -2,8 +2,6 @@
 
 set -e
 
-rm -rf ~/mavros_ws ~/kriso_ws
-
 mkdir -p ~/mavros_ws/src
 cd ~/mavros_ws
 catkin init
