@@ -1,4 +1,9 @@
 #! /usr/bin/env bash
+
+set -e
+
+rm -rf ~/mavros_ws ~/kriso_ws
+
 mkdir -p ~/mavros_ws/src
 cd ~/mavros_ws
 catkin init
@@ -16,12 +21,9 @@ git clone https://github.com/jebiio/mavlink_kriso.git mavlink
 cd ~/mavros_ws
 catkin build
 source ~/mavros_ws/devel/setup.bash
-echo "source ~/mavros_ws/devel/setup.bash" >> ~/.bashrc
 
 cd ~
 git clone https://github.com/jebiio/kriso_ws.git
 cd ~/kriso_ws
 catkin build
 source ~/kriso_ws/devel/setup.bash
-echo "source ~/kriso_ws/devel/setup.bash" >> ~/.bashrc
-
