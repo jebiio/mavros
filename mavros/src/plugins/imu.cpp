@@ -24,6 +24,7 @@
 #include <sensor_msgs/FluidPressure.h>
 #include <geometry_msgs/Vector3.h>
 #include <geometry_msgs/Vector3Stamped.h>
+#include <mavros_msgs/Attitude.h>
 
 namespace mavros {
 namespace std_plugins {
@@ -124,6 +125,10 @@ private:
 
 	ros::Publisher kari_imu_rpy_pub;
 	ros::Publisher kari_imu_gyro_pub;
+
+	ros::Publisher kari_att_pub;
+
+
 
 	bool has_hr_imu;
 	bool has_raw_imu;
@@ -302,12 +307,25 @@ private:
 	 */
 	void handle_attitude(const mavlink::mavlink_message_t *msg, mavlink::common::msg::ATTITUDE &att)
 	{
-		if (has_att_quat)
-			return;
+		// if (has_att_quat)
+		// 	return;
 
 		/** Orientation on the NED-aicraft frame:
 		 *  @snippet src/plugins/imu.cpp ned_aircraft_orient1
 		 */
+
+		mavros_msgs::Attitude ros_att_msg;
+
+		ros_att_msg.roll = att.roll * RAD_TO_DEG;
+		ros_att_msg.pitch = att.pitch * RAD_TO_DEG;
+		ros_att_msg.yaw = att.yaw * RAD_TO_DEG;
+
+		ros_att_msg.rollspeed = att.rollspeed * RAD_TO_DEG;
+		ros_att_msg.pitchspeed = att.pitchspeed * RAD_TO_DEG;
+		ros_att_msg.yawspeed = att.yawspeed * RAD_TO_DEG;
+
+		kari_att_pub.publish(ros_att_msg);
+		
 		// [ned_aircraft_orient1]
 		auto ned_aircraft_orientation = ftf::quaternion_from_rpy(att.roll, att.pitch, att.yaw);
 		// [ned_aircraft_orient1]

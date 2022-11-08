@@ -71,6 +71,7 @@ add_message_files(
   WaypointList.msg
   WaypointReached.msg
   WheelOdomStamped.msg
+  Attitude.msg
 )
 
 add_service_files(

@@ -1,0 +1,12 @@
+# Attitude
+#
+# https://mavlink.io/en/messages/common.html#HIGHRES_IMU
+
+std_msgs/Header header
+
+float32 roll
+float32 pitch
+float32 yaw
+float32 rollspeed
+float32 pitchspeed
+float32 yawspeed
