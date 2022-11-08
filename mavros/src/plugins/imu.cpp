@@ -95,6 +95,8 @@ public:
 		//kari 
 		kari_imu_rpy_pub = imu_nh.advertise<geometry_msgs::Vector3Stamped>("kari_imu_rpy", 10);
 		kari_imu_gyro_pub = imu_nh.advertise<geometry_msgs::Vector3Stamped>("kari_imu_gyro", 10);
+		kari_att_pub = imu_nh.advertise<mavros_msgs::Attitude>("attitude", 10);
+		
 
 		// Reset has_* flags on connection change
 		enable_connection_cb();
@@ -233,17 +235,17 @@ private:
 		// [pub_enu]
 
 		// kari 
-		auto kari_rpy = boost::make_shared< geometry_msgs::Vector3Stamped>();
-		auto rpy = ftf::quaternion_to_rpy(orientation_ned);
-		kari_rpy->header = m_uas->synchronized_header("aircraft", time_boot_ms);
-		tf::vectorEigenToMsg(rpy, kari_rpy->vector);
-		kari_imu_rpy_pub.publish(kari_rpy);
+		// auto kari_rpy = boost::make_shared< geometry_msgs::Vector3Stamped>();
+		// auto rpy = ftf::quaternion_to_rpy(orientation_ned);
+		// kari_rpy->header = m_uas->synchronized_header("aircraft", time_boot_ms);
+		// tf::vectorEigenToMsg(rpy, kari_rpy->vector);
+		// kari_imu_rpy_pub.publish(kari_rpy);
 
-		// kari 
-		auto kari_angular_vel = boost::make_shared< geometry_msgs::Vector3Stamped>();
-		kari_angular_vel->header = m_uas->synchronized_header("aircraft", time_boot_ms);
-		tf::vectorEigenToMsg(gyro_frd, kari_angular_vel->vector);
-		kari_imu_gyro_pub.publish(kari_angular_vel);		
+		// // kari 
+		// auto kari_angular_vel = boost::make_shared< geometry_msgs::Vector3Stamped>();
+		// kari_angular_vel->header = m_uas->synchronized_header("aircraft", time_boot_ms);
+		// tf::vectorEigenToMsg(gyro_frd, kari_angular_vel->vector);
+		// kari_imu_gyro_pub.publish(kari_angular_vel);		
 
 	}
 
