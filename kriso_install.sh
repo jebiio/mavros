@@ -12,6 +12,7 @@ cd ~/mavros_ws/src
 git clone https://github.com/jebiio/mavros.git
 cd mavros
 git checkout kriso_ros1
+sudo ./mavros/script/install_geographiclib_datasets.sh
 
 cd ~/mavros_ws/src
 git clone https://github.com/jebiio/mavlink_kriso.git mavlink
