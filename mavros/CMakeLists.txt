@@ -150,6 +150,8 @@ add_library(mavros_plugins
   src/plugins/wind_estimation.cpp
   src/plugins/kriso_status.cpp
   src/plugins/kriso_vol_status.cpp
+  src/plugins/kriso_control_command.cpp
+  src/plugins/kriso_ros_log_command.cpp
 )
 add_dependencies(mavros_plugins
   mavros
