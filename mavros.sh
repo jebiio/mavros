@@ -10,7 +10,7 @@ cd ~/catkin_ws
 cd ~/catkin_ws/src
 git clone https://github.com/jebiio/mavros.git
 cd mavros 
-git checkout kriso_ros1
+git checkout pr_kriso_ros1
 
 cd ~/catkin_ws/src
 git clone https://github.com/jebiio/mavlink_kriso.git mavlink

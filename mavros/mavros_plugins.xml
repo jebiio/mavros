@@ -93,4 +93,7 @@
   <class name="kriso_status" type="mavros::std_plugins::KrisoStatusPlugin" base_class_type="mavros::plugin::PluginBase">
     <description>Send to GCS KRISO Status</description>
   </class>
+  <class name="kriso_vol_status" type="mavros::std_plugins::KrisoVolStatusPlugin" base_class_type="mavros::plugin::PluginBase">
+    <description>Send to GCS KRISO Vol Status</description>
+  </class>
 </library>

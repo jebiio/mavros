@@ -39,6 +39,9 @@ add_message_files(
   HilStateQuaternion.msg
   HomePosition.msg
   KrisoStatus.msg
+  KrisoVolStatus.msg
+  KrisoRosLogCommand.msg
+  KrisoControlCommand.msg
   LandingTarget.msg
   LogData.msg
   LogEntry.msg
