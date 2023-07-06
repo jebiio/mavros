@@ -39,6 +39,12 @@ add_message_files(
   HilStateQuaternion.msg
   HomePosition.msg
   KrisoStatus.msg
+  Waypoint.msg 
+  CaToVcc.msg
+  CkToVcc.msg
+  ControlCmdToVcc.msg
+  DpToVcc.msg 
+  WtToVcc.msg
   LandingTarget.msg
   LogData.msg
   LogEntry.msg
