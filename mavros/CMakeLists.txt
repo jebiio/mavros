@@ -149,7 +149,9 @@ add_library(mavros_plugins
   src/plugins/waypoint.cpp
   src/plugins/wind_estimation.cpp
   src/plugins/kriso_status.cpp
+  src/plugins/kriso_qgc_to_ros.cpp
 )
+
 add_dependencies(mavros_plugins
   mavros
 )
