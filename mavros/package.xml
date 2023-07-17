@@ -32,6 +32,8 @@
   <!-- pymavlink dependency
   <exec_depend>mavlink</exec_depend>
   -->
+  <build_depend>kriso_msgs</build_depend>
+  <exec_depend>kriso_msgs</exec_depend>
 
   <!-- packages -->
   <build_depend>angles</build_depend>
