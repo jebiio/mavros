@@ -98,7 +98,22 @@
   </class>
   <class name="kriso_dp_command" type="mavros::std_plugins::DpCommandPlugin" base_class_type="mavros::plugin::PluginBase">
     <description>Send to ROS KRISO Dp Command</description>
-</class>
+  </class>
+  <class name="kriso_ca_command" type="mavros::std_plugins::CaCommandPlugin" base_class_type="mavros::plugin::PluginBase">
+    <description>Send to ROS KRISO Ca Command</description>
+  </class>
+  <class name="kriso_cmd_command" type="mavros::std_plugins::CmdCommandPlugin" base_class_type="mavros::plugin::PluginBase">
+    <description>Send to ROS KRISO Cmd Command</description>
+  </class>
+  <class name="kriso_logging_command" type="mavros::std_plugins::LoggingCommandPlugin" base_class_type="mavros::plugin::PluginBase">
+    <description>Send to ROS KRISO Logging stop/start Command</description>
+  </class>
+  <class name="kriso_emergency_stop_command" type="mavros::std_plugins::EmergencyStopCommandPlugin" base_class_type="mavros::plugin::PluginBase">
+    <description>Send to ROS KRISO Emergency Stop Command</description>
+  </class>
+  <class name="kriso_dp_to_vcc" type="mavros::std_plugins::KrisoDpToVccPlugin" base_class_type="mavros::plugin::PluginBase">
+    <description>Send to GCS KRISO DPtoVcc</description>
+  </class>
   <!-- <class name="kriso_qgc_to_ros" type="mavros::std_plugins::QgcToRosPlugin" base_class_type="mavros::plugin::PluginBase">
     <description>Send to ROS KRISO Data</description>
   </class>

@@ -16,7 +16,7 @@
 
 #include <mavros/mavros_plugin.h>
 
-#include <mavros_msgs/KrisoStatus.h>
+#include <kriso_msgs/DPtoVcc.h>
 //#include <mavros_msgs/krisoStatus.h>
 
 namespace mavros {
@@ -25,9 +25,9 @@ using mavlink::common::MAV_FRAME;
 /**
  * @brief KrisoStatusPlugin plugin.
  */
-class KrisoStatusPlugin : public plugin::PluginBase {
+class KrisoDpToVccPlugin : public plugin::PluginBase {
 public:
-	KrisoStatusPlugin() : PluginBase(),
+	KrisoDpToVccPlugin() : PluginBase(),
 		nh("/kriso")
 	{ }
 
@@ -39,7 +39,7 @@ public:
 		PluginBase::initialize(uas_);
 		nh.param<std::string>("frame_id", frame_id, "map");
 		
-		kriso_status_sub = nh.subscribe("status", 10, &KrisoStatusPlugin::kriso_status_cb, this);
+		kriso_DPtoVcc_sub = nh.subscribe("dp_to_vcc", 10, &KrisoDpToVccPlugin::kriso_dp_to_vcc_cb, this);
 	}
 
 	Subscriptions get_subscriptions() override
@@ -56,7 +56,7 @@ private:
 	ros::NodeHandle nh;
 	std::string frame_id;
 
-	ros::Subscriber kriso_status_sub;
+	ros::Subscriber kriso_DPtoVcc_sub;
 
 	// void kriso_status_cb(const mavros_msgs::KrisoStatus::ConstPtr &req)
 	// {
@@ -75,37 +75,14 @@ private:
 	// 	UAS_GCS(m_uas)->send_message_ignore_drop(hState);
 	// }
 
-	void kriso_status_cb(const mavros_msgs::KrisoStatus::ConstPtr &req){
+	void kriso_dp_to_vcc_cb(const kriso_msgs::DPtoVcc::ConstPtr &req){
 		//10Hz로 수신하여 GCS로 전송
-		mavlink::common::msg::KRISO_STATUS kStatus{};
+		mavlink::common::msg::KRISO_DP_TO_VCC kStatus{};
 
-		kStatus.t1_rpm = req->t1_rpm;
-		kStatus.t2_rpm = req->t2_rpm;
-		kStatus.t3_rpm = req->t3_rpm;
-		kStatus.t3_angle = req->t3_angle;
-		kStatus.t4_rpm = req->t4_rpm;
-		kStatus.t4_angle = req->t4_angle;
-
-		kStatus.nav_mode = req->nav_mode;
-		kStatus.nav_roll = req->nav_roll;
-		kStatus.nav_pitch = req->nav_pitch;
-		kStatus.nav_yaw = req->nav_yaw;
-		kStatus.nav_cog = req->nav_cog;
-		kStatus.nav_sog = req->nav_sog;
-		kStatus.nav_uspd = req->nav_uspd;
-		kStatus.nav_vspd = req->nav_vspd;
-		kStatus.nav_longitude = req->nav_longitude;
-		kStatus.nav_latitude = req->nav_latitude;
-		kStatus.nav_gpstime = req->nav_gpstime;
-		kStatus.wea_airtem = req->wea_airtem;
-		kStatus.wea_wattem = req->wea_wattem; 
-		kStatus.wea_press  = req->wea_press;
-		kStatus.wea_relhum = req->wea_relhum;
-		kStatus.wea_windirt = req->wea_windirt;
-		kStatus.wea_winspdt = req->wea_winspdt;
-		kStatus.wea_watdir = req->wea_watdir;
-		kStatus.wea_watspd = req->wea_watspd;
-		kStatus.wea_visibiran = req->wea_visibiran;
+		kStatus.surge_error = req->surge_error;
+		kStatus.sway_error = req->sway_error;
+		kStatus.yaw_error = req->yaw_error;
+		kStatus.dp_start_stop = req->dp_start_stop;
 
 		UAS_GCS(m_uas)->send_message_ignore_drop(kStatus);
 	}
@@ -114,4 +91,4 @@ private:
 }	// namespace mavros
 
 #include <pluginlib/class_list_macros.h>
-PLUGINLIB_EXPORT_CLASS(mavros::std_plugins::KrisoStatusPlugin, mavros::plugin::PluginBase)
+PLUGINLIB_EXPORT_CLASS(mavros::std_plugins::KrisoDpToVccPlugin, mavros::plugin::PluginBase)

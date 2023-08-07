@@ -32,7 +32,7 @@ public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
 	DpCommandPlugin() : PluginBase(),
-		gp_nh("~ck_command")
+		gp_nh("/kriso")
 	{ }
 
 	void initialize(UAS &uas_) override
@@ -44,7 +44,7 @@ public:
 
 		// UAS_DIAG(m_uas).add("GPS", this, &GlobalPositionPlugin::gps_diag_run);
 
-		qgc_to_ros_pub = gp_nh.advertise<kriso_msgs::DPtoController>("kriso/dptocontroller", 5);
+		qgc_to_ros_pub = gp_nh.advertise<kriso_msgs::DPtoController>("dp_to_controller", 5);
 
 	}
 

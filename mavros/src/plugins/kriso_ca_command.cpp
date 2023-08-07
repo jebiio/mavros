@@ -14,12 +14,12 @@
 #include <angles/angles.h>
 
 #include <mavros/mavros_plugin.h>
-#include <mavros_msgs/KrisoStatus.h>
 
 #include <std_msgs/Float64.h>
 #include <std_msgs/UInt32.h>
 
-#include <kriso_msgs/CKtoController.h>
+#include <kriso_msgs/CAtoController.h>
+
 
 namespace mavros {
 namespace std_plugins {
@@ -28,11 +28,11 @@ namespace std_plugins {
  *
  *
  */
-class CkCommandPlugin : public plugin::PluginBase {
+class CaCommandPlugin : public plugin::PluginBase {
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
-	CkCommandPlugin() : PluginBase(),
+	CaCommandPlugin() : PluginBase(),
 		gp_nh("/kriso")
 	{ }
 
@@ -45,14 +45,14 @@ public:
 
 		// UAS_DIAG(m_uas).add("GPS", this, &GlobalPositionPlugin::gps_diag_run);
 
-		qgc_to_ros_pub = gp_nh.advertise<kriso_msgs::CKtoController>("ck_to_controller", 5);
+		qgc_to_ros_pub = gp_nh.advertise<kriso_msgs::CAtoController>("ca_to_controller", 5);
 
 	}
 
 	Subscriptions get_subscriptions() override
 	{
 		return {
-				make_handler(&CkCommandPlugin::handle_ck_command)
+				make_handler(&CaCommandPlugin::handle_ca_command)
 				// make_handler(&GlobalPositionPlugin::handle_gps_raw_int),
 				// // GPS_STATUS: there no corresponding ROS message, and it is not supported by APM
 				// make_handler(&GlobalPositionPlugin::handle_global_position_int),
@@ -68,14 +68,18 @@ private:
 
 	/* -*- message handlers -*- */
 
-	void handle_ck_command(const mavlink::mavlink_message_t *msg, mavlink::common::msg::KRISO_CK_COMMAND &command)
+	void handle_ca_command(const mavlink::mavlink_message_t *msg, mavlink::common::msg::KRISO_CA_COMMAND &command)
 	{
-		auto data = boost::make_shared<kriso_msgs::CKtoController>();
-		data->hdg_cmd = command.hdg_cmd;
-		data->nav_surge_dgain = command.nav_surge_dgain;
-		data->nav_surge_pgain = command.nav_surge_pgain;
-		data->nav_yaw_dgain = command.nav_yaw_dgain;
-		data->nav_yaw_pgain = command.nav_yaw_pgain;
+		auto data = boost::make_shared<kriso_msgs::CAtoController>();
+		data->ca_alert_range = command.ca_alert_range;
+		data->ca_avoid_range = command.ca_avoid_range;
+		data->ca_param1 = command.ca_param1;
+		data->ca_param2 = command.ca_param2;
+		data->ca_param3 = command.ca_param3;
+		data->ca_param4 = command.ca_param4;
+		data->ca_param5 = command.ca_param5;
+		data->ca_param6 = command.ca_param6;
+		data->ca_param7 = command.ca_param7;
 
 		qgc_to_ros_pub.publish(data);
 	}
@@ -329,4 +333,4 @@ private:
 }	// namespace mavros
 
 #include <pluginlib/class_list_macros.h>
-PLUGINLIB_EXPORT_CLASS(mavros::std_plugins::CkCommandPlugin, mavros::plugin::PluginBase)
+PLUGINLIB_EXPORT_CLASS(mavros::std_plugins::CaCommandPlugin, mavros::plugin::PluginBase)
