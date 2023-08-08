@@ -67,7 +67,7 @@ private:
 
 	/* -*- message handlers -*- */
 
-	void handle_dp_command(const mavlink::mavlink_message_t *msg, mavlink::common::msg::KRISO_DP_COMMAND &command)
+	void handle_dp_command(const mavlink::mavlink_message_t *msg, mavlink::kriso::msg::KRISO_DP_COMMAND &command)
 	{
 		auto data = boost::make_shared<kriso_msgs::DPtoController>();
 		data->dp_surge_dgain = command.dp_surge_dgain;

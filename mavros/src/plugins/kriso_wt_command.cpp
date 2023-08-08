@@ -18,7 +18,7 @@
 #include <std_msgs/Float64.h>
 #include <std_msgs/UInt32.h>
 
-#include <kriso_msgs/CmdtoController.h>
+#include <kriso_msgs/WTtoController.h>
 
 
 namespace mavros {
@@ -28,11 +28,11 @@ namespace std_plugins {
  *
  *
  */
-class CmdCommandPlugin : public plugin::PluginBase {
+class WtCommandPlugin : public plugin::PluginBase {
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
-	CmdCommandPlugin() : PluginBase(),
+	WtCommandPlugin() : PluginBase(),
 		gp_nh("/kriso")
 	{ }
 
@@ -45,14 +45,14 @@ public:
 
 		// UAS_DIAG(m_uas).add("GPS", this, &GlobalPositionPlugin::gps_diag_run);
 
-		qgc_to_ros_pub = gp_nh.advertise<kriso_msgs::CmdtoController>("cmd_to_controller", 5);
+		qgc_to_ros_pub = gp_nh.advertise<kriso_msgs::WTtoController>("wt_to_controller", 5);
 
 	}
 
 	Subscriptions get_subscriptions() override
 	{
 		return {
-				make_handler(&CmdCommandPlugin::handle_cmd_command)
+				make_handler(&WtCommandPlugin::handle_wt_command)
 				// make_handler(&GlobalPositionPlugin::handle_gps_raw_int),
 				// // GPS_STATUS: there no corresponding ROS message, and it is not supported by APM
 				// make_handler(&GlobalPositionPlugin::handle_global_position_int),
@@ -68,13 +68,19 @@ private:
 
 	/* -*- message handlers -*- */
 
-	void handle_cmd_command(const mavlink::mavlink_message_t *msg, mavlink::kriso::msg::KRISO_CONTROL_COMMAND &command)
+	void handle_wt_command(const mavlink::mavlink_message_t *msg, mavlink::kriso::msg::KRISO_WT_COMMAND &command)
 	{
-		auto data = boost::make_shared<kriso_msgs::CmdtoController>();
-		data->oper_mode = command.op_mode;
-		data->mission_mode = command.mission_mode;
-		data->ca_mode = command.ca_mode;
-		data->ca_method = command.ca_method;
+		auto data = boost::make_shared<kriso_msgs::WTtoController>();
+		for(int i=0; i<5; i++){ //현재 5개만 가능
+			data->global_path[i].lat = 	command.lat[i];
+			data->global_path[i].lon = command.lon[i];
+			data->global_path[i].spd_cmd = command.spd_cmd[i];
+			data->global_path[i].acceptance_radius = command.acceptance_radius[i];
+		}
+		data->nav_surge_pgain = command.nav_surge_pgain;
+		data->nav_surge_dgain = command.nav_surge_dgain;
+		data->nav_yaw_pgain = command.nav_yaw_pgain;
+		data->nav_yaw_dgain = command.nav_yaw_dgain;
 
 		qgc_to_ros_pub.publish(data);
 	}
@@ -84,4 +90,4 @@ private:
 }	// namespace mavros
 
 #include <pluginlib/class_list_macros.h>
-PLUGINLIB_EXPORT_CLASS(mavros::std_plugins::CmdCommandPlugin, mavros::plugin::PluginBase)
+PLUGINLIB_EXPORT_CLASS(mavros::std_plugins::WtCommandPlugin, mavros::plugin::PluginBase)

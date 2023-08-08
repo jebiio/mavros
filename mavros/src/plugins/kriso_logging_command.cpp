@@ -68,7 +68,7 @@ private:
 
 	/* -*- message handlers -*- */
 
-	void handle_logging_command(const mavlink::mavlink_message_t *msg, mavlink::common::msg::KRISO_ROS_LOG_COMMAND
+	void handle_logging_command(const mavlink::mavlink_message_t *msg, mavlink::kriso::msg::KRISO_ROS_LOG_COMMAND
  &command)
 	{
 		auto data = boost::make_shared<kriso_msgs::LoggingCmd>();

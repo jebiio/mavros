@@ -68,7 +68,7 @@ private:
 
 	/* -*- message handlers -*- */
 
-	void handle_emergency_stop_command(const mavlink::mavlink_message_t *msg, mavlink::common::msg::KRISO_EMERGENCY_COMMAND
+	void handle_emergency_stop_command(const mavlink::mavlink_message_t *msg, mavlink::kriso::msg::KRISO_EMERGENCY_COMMAND
  &command)
 	{
 		auto data = boost::make_shared<kriso_msgs::EmergencyStopCmd>();

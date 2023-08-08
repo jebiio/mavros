@@ -68,7 +68,7 @@ private:
 
 	/* -*- message handlers -*- */
 
-	void handle_ca_command(const mavlink::mavlink_message_t *msg, mavlink::common::msg::KRISO_CA_COMMAND &command)
+	void handle_ca_command(const mavlink::mavlink_message_t *msg, mavlink::kriso::msg::KRISO_CA_COMMAND &command)
 	{
 		auto data = boost::make_shared<kriso_msgs::CAtoController>();
 		data->ca_alert_range = command.ca_alert_range;

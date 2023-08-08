@@ -72,7 +72,7 @@ private:
 
 	/* -*- message handlers -*- */
 
-	void handle_qgc_data(const mavlink::mavlink_message_t *msg, mavlink::common::msg::KRISO_STATUS &data)
+	void handle_qgc_data(const mavlink::mavlink_message_t *msg, mavlink::kriso::msg::KRISO_STATUS &data)
 	{
 		auto data2 = boost::make_shared<mavros_msgs::KrisoStatus>();
 

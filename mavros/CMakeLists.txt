@@ -157,6 +157,9 @@ add_library(mavros_plugins
   src/plugins/kriso_logging_command.cpp
   src/plugins/kriso_emergency_stop_command.cpp
   src/plugins/kriso_dp_to_vcc.cpp
+  src/plugins/kriso_ck_to_vcc.cpp
+  src/plugins/kriso_wt_to_vcc.cpp
+  src/plugins/kriso_wt_command.cpp
   # src/plugins/kriso_qgc_to_ros.cpp
 )
 

@@ -62,7 +62,7 @@ private:
 	// {
 	// 	ROS_WARN_NAMED("time", "KRISO : KRISO STATUS Received");
 	// 	mavlink::common::msg::HIL_STATE hState {};
-	// 	mavlink::common::msg::KRISO_STATUS kStatus{};
+	// 	mavlink::kriso::msg::KRISO_STATUS kStatus{};
 
 	// 	UAS_GCS(m_uas)->send_message_ignore_drop(hState);
 	// }
@@ -71,13 +71,13 @@ private:
 	// {
 	// 	//10Hz로 수신하여 GCS로 전송
 	// 	mavlink::common::msg::HIL_STATE hState {};
-	// 	mavlink::common::msg::KRISO_STATUS kStatus{};
+	// 	mavlink::kriso::msg::KRISO_STATUS kStatus{};
 	// 	UAS_GCS(m_uas)->send_message_ignore_drop(hState);
 	// }
 
 	void kriso_dp_to_vcc_cb(const kriso_msgs::DPtoVcc::ConstPtr &req){
 		//10Hz로 수신하여 GCS로 전송
-		mavlink::common::msg::KRISO_DP_TO_VCC kStatus{};
+		mavlink::kriso::msg::KRISO_DP_TO_VCC kStatus{};
 
 		kStatus.surge_error = req->surge_error;
 		kStatus.sway_error = req->sway_error;

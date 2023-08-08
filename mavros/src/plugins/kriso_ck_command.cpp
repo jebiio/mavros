@@ -68,7 +68,7 @@ private:
 
 	/* -*- message handlers -*- */
 
-	void handle_ck_command(const mavlink::mavlink_message_t *msg, mavlink::common::msg::KRISO_CK_COMMAND &command)
+	void handle_ck_command(const mavlink::mavlink_message_t *msg, mavlink::kriso::msg::KRISO_CK_COMMAND &command)
 	{
 		auto data = boost::make_shared<kriso_msgs::CKtoController>();
 		data->hdg_cmd = command.hdg_cmd;

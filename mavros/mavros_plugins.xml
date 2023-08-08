@@ -112,7 +112,17 @@
     <description>Send to ROS KRISO Emergency Stop Command</description>
   </class>
   <class name="kriso_dp_to_vcc" type="mavros::std_plugins::KrisoDpToVccPlugin" base_class_type="mavros::plugin::PluginBase">
-    <description>Send to GCS KRISO DPtoVcc</description>
+    <description>Send to GCS. KRISO DPtoVcc</description>
+  </class>
+  <class name="kriso_ck_to_vcc" type="mavros::std_plugins::CkToVccPlugin" base_class_type="mavros::plugin::PluginBase">
+    <description>Send to GCS. KRISO CkToVcc</description>
+  </class>
+  <class name="kriso_wt_to_vcc" type="mavros::std_plugins::WtToVccPlugin" base_class_type="mavros::plugin::PluginBase">
+    <description>Send to GCS. KRISO WtToVcc</description>
+  </class>
+
+  <class name="kriso_wt_command" type="mavros::std_plugins::WtCommandPlugin" base_class_type="mavros::plugin::PluginBase">
+    <description>Send to ROS. KRISO WtCommand</description>
   </class>
   <!-- <class name="kriso_qgc_to_ros" type="mavros::std_plugins::QgcToRosPlugin" base_class_type="mavros::plugin::PluginBase">
     <description>Send to ROS KRISO Data</description>
