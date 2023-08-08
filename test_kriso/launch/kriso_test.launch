@@ -1,0 +1,9 @@
+<launch>
+<!-- > roslaunch test_kriso kriso_test.launch msg:=[scripts/Python파일].py  -->
+<!-- 실행 방법 예제 : > roslaunch test_kriso kriso_test.launch msg:=CKVccPublish.py -->
+	<arg name="msg" />
+
+	<node pkg="test_kriso" type="$(arg msg)" name="$(arg msg)_test_node" required="true"  output="screen">	
+	</node>
+
+</launch>
