@@ -161,6 +161,7 @@ add_library(mavros_plugins
   src/plugins/kriso_wt_to_vcc.cpp
   src/plugins/kriso_wt_command.cpp
   src/plugins/kriso_logging_status.cpp
+  src/plugins/kriso_middleware_ais.cpp
   # src/plugins/kriso_qgc_to_ros.cpp
 )
 
