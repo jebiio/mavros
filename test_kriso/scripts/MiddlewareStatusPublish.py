@@ -15,7 +15,7 @@ def talker():
     msg.nav_mode     = 1
     msg.nav_roll     = 0.1
     msg.nav_pitch    = 0.2
-    msg.nav_yaw      = 0.3
+    msg.nav_yaw      = 3.3
     msg.nav_yaw_rate = 0.4
     msg.nav_cog      = 0.5
     msg.nav_sog      = 0.6
