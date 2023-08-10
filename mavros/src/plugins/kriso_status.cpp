@@ -38,7 +38,7 @@ public:
 		PluginBase::initialize(uas_);
 		nh.param<std::string>("frame_id", frame_id, "map");
 		
-		kriso_status_sub = nh.subscribe("status", 10, &KrisoStatusPlugin::kriso_status_cb, this);
+		kriso_status_sub = nh.subscribe("middleware_to_vcc", 10, &KrisoStatusPlugin::kriso_status_cb, this);
 	}
 
 	Subscriptions get_subscriptions() override
