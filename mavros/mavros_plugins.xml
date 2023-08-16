@@ -130,6 +130,9 @@
   <class name="kriso_middleware_ais" type="mavros::std_plugins::KrisoMiddlewareAISPlugin" base_class_type="mavros::plugin::PluginBase">
     <description>Send to GCS. KRISO Middleware AIS</description>
   </class>
+  <class name="kriso_controlcmd_to_vcc" type="mavros::std_plugins::ContolCmdToVccPlugin" base_class_type="mavros::plugin::PluginBase">
+    <description>Send to GCS. KRISO Control Cmd To Vcc</description>
+  </class>
   <!-- <class name="kriso_qgc_to_ros" type="mavros::std_plugins::QgcToRosPlugin" base_class_type="mavros::plugin::PluginBase">
     <description>Send to ROS KRISO Data</description>
   </class>
