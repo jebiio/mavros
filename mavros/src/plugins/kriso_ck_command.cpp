@@ -71,6 +71,7 @@ private:
 	void handle_ck_command(const mavlink::mavlink_message_t *msg, mavlink::kriso::msg::KRISO_CK_COMMAND &command)
 	{
 		auto data = boost::make_shared<kriso_msgs::CKtoController>();
+		data->spd_cmd = command.spd_cmd;
 		data->hdg_cmd = command.hdg_cmd;
 		data->nav_surge_dgain = command.nav_surge_dgain;
 		data->nav_surge_pgain = command.nav_surge_pgain;

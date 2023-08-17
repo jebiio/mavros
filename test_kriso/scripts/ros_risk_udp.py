@@ -9,7 +9,7 @@ from time import sleep
 import numpy as np
 from kriso_msgs.msg import CAtoVcc as CAtoVcc
 
-serverAddressPort   = ("127.0.0.1", 20211)
+serverAddressPort   = ("192.168.0.102", 20211)
 UDPClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
 
 def callback(data):
