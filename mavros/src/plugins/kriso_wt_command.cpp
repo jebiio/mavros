@@ -81,6 +81,7 @@ private:
 		data->nav_surge_dgain = command.nav_surge_dgain;
 		data->nav_yaw_pgain = command.nav_yaw_pgain;
 		data->nav_yaw_dgain = command.nav_yaw_dgain;
+		data->count = command.count;
 
 		qgc_to_ros_pub.publish(data);
 	}
