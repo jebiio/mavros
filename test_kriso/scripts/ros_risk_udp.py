@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 # 실행 방법 : > roslaunch test_kriso kriso_test.launch msg:=ros_risk_udp.py
+#           > rosrun test_kriso ros_risk_udp.py 
 
 import rospy
 import socket
