@@ -79,6 +79,7 @@ private:
 		data->t4_angle	= command.t4_angle;
 		
 		qgc_to_ros_pub.publish(data);
+        ROS_INFO("MTCmd is published to GCS -> ROS");
 	}
 
 };
