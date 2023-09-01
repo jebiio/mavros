@@ -70,7 +70,9 @@ private:
 
 	void handle_wt_command(const mavlink::mavlink_message_t *msg, mavlink::kriso::msg::KRISO_WT_COMMAND &command)
 	{
+		ROS_INFO("mavlink WT_Command received!!");
 		auto data = boost::make_shared<kriso_msgs::WTtoController>();
+
 		for(int i=0; i<5; i++){ //현재 5개만 가능
 			data->global_path[i].lat = 	command.lat[i];
 			data->global_path[i].lon = command.lon[i];
@@ -84,6 +86,7 @@ private:
 		data->count = command.count;
 
 		qgc_to_ros_pub.publish(data);
+		ROS_INFO("ROS WTtoController published!!!!");
 	}
 
 };
