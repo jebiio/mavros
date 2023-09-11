@@ -7,6 +7,46 @@ MAVLink extendable communication node for ROS2.
 ROS API documentation moved to [wiki.ros.org][wiki].
 
 
+### Source installation
+
+`vcs` 를 이용해서 소스 가져오고 `colcon` 으로 빌드 수행.
+
+NOTE: 소스로 설치는 Humble 에서 진행
+
+```sh
+sudo apt install -y python3-vcstool python3-rosinstall-generator python3-osrf-pycommon
+
+# 1. worksspace 생성
+mkdir -p ~/ros2_ws/src
+cd ~/ros2_ws
+
+# 2. MAVLink 설치
+#    ROS 배포판 
+rosinstall_generator --format repos mavlink | tee /tmp/mavlink.repos
+
+# 3. MAVROS 설치를 위한 소스 가져오기 get source (upstream - released)
+rosinstall_generator --format repos --upstream mavros | tee -a /tmp/mavros.repos
+# alternative: latest source
+# rosinstall_generator --format repos --upstream-development mavros | tee -a /tmp/mavros.repos
+# For fetching all the dependencies into your ros2_ws, just add '--deps' to the above scripts
+# ex: rosinstall_generator --format repos --upstream mavros --deps | tee -a /tmp/mavros.repos
+
+# 4. workspace 및 deps 생성
+vcs import src < /tmp/mavlink.repos
+vcs import src < /tmp/mavros.repos
+rosdep install --from-paths src --ignore-src -y
+
+# 5. GeographicLib datasets 설치:
+./src/mavros/mavros/scripts/install_geographiclib_datasets.sh
+
+# 6. 소스 빌드
+colcon build
+
+# 7. setup.bash 사용 
+source install/setup.bash
+```
+
+
 Features
 --------
 
