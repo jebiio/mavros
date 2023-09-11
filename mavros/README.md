@@ -7,7 +7,7 @@ MAVLink extendable communication node for ROS2.
 ROS API documentation moved to [wiki.ros.org][wiki].
 
 
-### Source installation
+### 소스 설치
 
 `vcs` 를 이용해서 소스 가져오고 `colcon` 으로 빌드 수행.
 
@@ -44,8 +44,10 @@ colcon build
 
 # 7. setup.bash 사용 
 source install/setup.bash
-```
 
+# 8. mavros 실행 (px4.launch 파일에서 FCU URL 변경)
+ros2 launch mavros px4.launch
+```
 
 Features
 --------
