@@ -110,6 +110,8 @@ public:
 
     auto sensor_qos = rclcpp::SensorDataQoS();
 
+    kari_vel_pub = node->create_publisher<geometry_msgs::msg::Vector3>("~/kari_vel", sensor_qos);
+
     // gps data
     raw_fix_pub = node->create_publisher<sensor_msgs::msg::NavSatFix>("~/raw/fix", sensor_qos);
     raw_vel_pub = node->create_publisher<geometry_msgs::msg::TwistStamped>(
@@ -156,6 +158,7 @@ public:
   }
 
 private:
+  rclcpp::Publisher<geometry_msgs::msg::Vector3>::SharedPtr kari_vel_pub;
   rclcpp::Publisher<sensor_msgs::msg::NavSatFix>::SharedPtr raw_fix_pub;
   rclcpp::Publisher<geometry_msgs::msg::TwistStamped>::SharedPtr raw_vel_pub;
   rclcpp::Publisher<std_msgs::msg::UInt32>::SharedPtr raw_sat_pub;
@@ -318,6 +321,7 @@ private:
     auto fix = sensor_msgs::msg::NavSatFix();
     auto relative_alt = std_msgs::msg::Float64();
     auto compass_heading = std_msgs::msg::Float64();
+    auto kari_vel = geometry_msgs::msg::Vector3();
 
     auto header = uas->synchronized_header(child_frame_id, gpos.time_boot_ms);
 
@@ -349,6 +353,11 @@ private:
      * Pose covariance: computed, with fixed diagonal
      * Velocity covariance: unknown
      */
+
+    kari_vel.x = gpos.vx;
+    kari_vel.y = gpos.vy;
+    kari_vel.z = gpos.vz;
+
     odom.header.stamp = header.stamp;
     odom.header.frame_id = frame_id;
     odom.child_frame_id = child_frame_id;
@@ -431,6 +440,7 @@ private:
       rot_cov;
 
     // publish
+    kari_vel_pub->publish(kari_vel);
     gp_fix_pub->publish(fix);
     gp_odom_pub->publish(odom);
     gp_rel_alt_pub->publish(relative_alt);

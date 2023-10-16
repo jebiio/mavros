@@ -109,6 +109,7 @@ public:
 
     auto sensor_qos = rclcpp::SensorDataQoS();
 
+    kari_rpy_pub = node->create_publisher<geometry_msgs::msg::Vector3>("~/kari_rpy", sensor_qos);
     imu_pub = node->create_publisher<sensor_msgs::msg::Imu>("~/data", sensor_qos);
     imu_raw_pub = node->create_publisher<sensor_msgs::msg::Imu>("~/data_raw", sensor_qos);
     magn_pub = node->create_publisher<sensor_msgs::msg::MagneticField>("~/mag", sensor_qos);
@@ -144,6 +145,7 @@ public:
 private:
   std::string frame_id;
 
+  rclcpp::Publisher<geometry_msgs::msg::Vector3>::SharedPtr kari_rpy_pub;
   rclcpp::Publisher<sensor_msgs::msg::Imu>::SharedPtr imu_pub;
   rclcpp::Publisher<sensor_msgs::msg::Imu>::SharedPtr imu_raw_pub;
   rclcpp::Publisher<sensor_msgs::msg::MagneticField>::SharedPtr magn_pub;
@@ -209,6 +211,17 @@ private:
     imu_enu_msg.orientation = tf2::toMsg(orientation_enu);
     imu_ned_msg.orientation = tf2::toMsg(orientation_ned);
 
+    // Convert from Eigen::Quaterniond to RPY kari 
+    double roll, pitch, yaw;
+    ftf::quaternion_to_rpy(orientation_ned, roll, pitch, yaw);
+
+
+    geometry_msgs::msg::Vector3 vector3_msg;  
+    vector3_msg.x = roll; // Set the roll value in radians
+    vector3_msg.y = pitch; // Set the pitch value in radians
+    vector3_msg.z = yaw; // Set the yaw value in radians
+    kari_rpy_pub->publish(vector3_msg);
+
     // Convert from Eigen::Vector3d to geometry_msgs::Vector3
     tf2::toMsg(gyro_flu, imu_enu_msg.angular_velocity);
     tf2::toMsg(gyro_frd, imu_ned_msg.angular_velocity);
@@ -254,6 +267,9 @@ private:
     // [pub_enu]
     imu_pub->publish(imu_enu_msg);
     // [pub_enu]
+
+    // [pub_ned]
+    // imu_pub->publish(imu_ned_msg);
   }
 
   /**
