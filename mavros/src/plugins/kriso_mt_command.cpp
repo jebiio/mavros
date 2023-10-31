@@ -27,6 +27,7 @@ namespace std_plugins {
  *
  *
  */
+// mt_cmd 메시지를 QGC로부터 받아서 ROS로 전송하는 Plugin
 class MtCommandPlugin : public plugin::PluginBase {
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -67,6 +68,7 @@ private:
 
 	/* -*- message handlers -*- */
 
+	// mt_cmd 메시지를 QGC로부터 받아서 ROS로 전송하는 함수. /kriso/mt_cmd topic으로 전송한다.
 	void handle_mt_command(const mavlink::mavlink_message_t *msg, mavlink::kriso::msg::KRISO_MT_COMMAND &command)
 	{
 		auto data = boost::make_shared<kriso_msgs::MTCmd>();

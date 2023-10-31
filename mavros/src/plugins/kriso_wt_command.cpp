@@ -28,6 +28,7 @@ namespace std_plugins {
  *
  *
  */
+//  WT_Command 메시지를 QGC로부터 받아서 ROS로 전송하는 Plugin
 class WtCommandPlugin : public plugin::PluginBase {
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -68,6 +69,7 @@ private:
 
 	/* -*- message handlers -*- */
 
+	// wt_to_controller 메시지를 QGC로부터 받아서 ROS로 전송하는 함수. /kriso/wt_to_controller topic으로 전송
 	void handle_wt_command(const mavlink::mavlink_message_t *msg, mavlink::kriso::msg::KRISO_WT_COMMAND &command)
 	{
 		ROS_INFO("mavlink WT_Command received!!");

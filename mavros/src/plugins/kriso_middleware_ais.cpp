@@ -22,8 +22,9 @@ namespace mavros {
 namespace std_plugins {
 using mavlink::common::MAV_FRAME;
 /**
- * @brief KrisoStatusPlugin plugin.
+ * @brief KrisoMiddlewareAISPlugin plugin.
  */
+// middleware_ais 메시지를 수신하여 GCS로 전송하는 Plugin
 class KrisoMiddlewareAISPlugin : public plugin::PluginBase {
 public:
 	KrisoMiddlewareAISPlugin() : PluginBase(),
@@ -74,6 +75,7 @@ private:
 	// 	UAS_GCS(m_uas)->send_message_ignore_drop(hState);
 	// }
 
+	//  middleware_ais 메시지를 수신하여 GCS로 전송. /kriso/middleware_ais topic으로부터 수신한다.
 	void kriso_middleware_ais_cb(const kriso_msgs::MiddlewareAIS::ConstPtr &req){
 		//10Hz로 수신하여 GCS로 전송
 		mavlink::kriso::msg::KRISO_AIS_STATUS kStatus{};

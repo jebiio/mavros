@@ -28,6 +28,7 @@ namespace std_plugins {
  *
  *
  */
+// QGC에서 ROS로 메시지를 보내는 플러그인으로 CAtoController 메시지를 보낸다.
 class CaCommandPlugin : public plugin::PluginBase {
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -68,6 +69,7 @@ private:
 
 	/* -*- message handlers -*- */
 
+	///kriso/ca_to_controller topic으로 메시지를 publish한다.
 	void handle_ca_command(const mavlink::mavlink_message_t *msg, mavlink::kriso::msg::KRISO_CA_COMMAND &command)
 	{
 		auto data = boost::make_shared<kriso_msgs::CAtoController>();

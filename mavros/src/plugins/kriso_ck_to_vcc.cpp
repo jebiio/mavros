@@ -23,8 +23,9 @@ namespace mavros {
 namespace std_plugins {
 using mavlink::common::MAV_FRAME;
 /**
- * @brief KrisoStatusPlugin plugin.
+ * @brief ck_to_vcc  plugin.
  */
+// Controller에서 ck_to_vcc를 보내면, vcc에서 QGC로 전송
 class CkToVccPlugin : public plugin::PluginBase {
 public:
 	CkToVccPlugin() : PluginBase(),
@@ -75,13 +76,14 @@ private:
 	// 	UAS_GCS(m_uas)->send_message_ignore_drop(hState);
 	// }
 
+	// /kriso/ck_to_vcc topic상에서 CKtoVCC 수신하여 QGC로 전송
 	void ck_to_vcc_cb(const kriso_msgs::CKtoVcc::ConstPtr &req){
 		//10Hz로 수신하여 GCS로 전송
 		mavlink::kriso::msg::KRISO_CK_TO_VCC kStatus{};
 
 		kStatus.psi_d = req->psi_d;
 		kStatus.spd_d = req->spd_d;
-
+		// QGC로 전송하는 부분
 		UAS_GCS(m_uas)->send_message_ignore_drop(kStatus);
 	}
 };

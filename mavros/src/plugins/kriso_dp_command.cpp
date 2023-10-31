@@ -27,6 +27,7 @@ namespace std_plugins {
  *
  *
  */
+// QGC에서 수신한 dp_to_controller 메시지를 ROS로 전송하는 Plugin
 class DpCommandPlugin : public plugin::PluginBase {
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -67,6 +68,7 @@ private:
 
 	/* -*- message handlers -*- */
 
+	// dp_to_controller 메시지를 수신하여 ROS로 전송. /kriso/dp_to_controller topic으로 전송한다.
 	void handle_dp_command(const mavlink::mavlink_message_t *msg, mavlink::kriso::msg::KRISO_DP_COMMAND &command)
 	{
 		auto data = boost::make_shared<kriso_msgs::DPtoController>();

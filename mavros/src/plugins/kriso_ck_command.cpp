@@ -28,6 +28,7 @@ namespace std_plugins {
  *
  *
  */
+// QGC에서 ROS로 메시지를 보내는 플러그인으로 CKtoController 메시지를 보낸다.
 class CkCommandPlugin : public plugin::PluginBase {
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -68,6 +69,7 @@ private:
 
 	/* -*- message handlers -*- */
 
+	// /kriso/ck_to_controller topic에 CKtoController 메시지를 보낸다.
 	void handle_ck_command(const mavlink::mavlink_message_t *msg, mavlink::kriso::msg::KRISO_CK_COMMAND &command)
 	{
 		auto data = boost::make_shared<kriso_msgs::CKtoController>();

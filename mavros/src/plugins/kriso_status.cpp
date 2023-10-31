@@ -24,6 +24,7 @@ using mavlink::common::MAV_FRAME;
 /**
  * @brief KrisoStatusPlugin plugin.
  */
+// kriso의 상태를 받아서 GCS로 전송하는 Plugin
 class KrisoStatusPlugin : public plugin::PluginBase {
 public:
 	KrisoStatusPlugin() : PluginBase(),
@@ -74,6 +75,7 @@ private:
 	// 	UAS_GCS(m_uas)->send_message_ignore_drop(hState);
 	// }
 
+	// kriso 상태를 받아서 GCS로 전송. /kriso/middleware_to_vcc topic에서 수신한다.
 	void kriso_status_cb(const kriso_msgs::MiddlewareToVcc::ConstPtr &req){
 		//10Hz로 수신하여 GCS로 전송
 		mavlink::kriso::msg::KRISO_STATUS kStatus{};

@@ -23,8 +23,10 @@ namespace mavros {
 namespace std_plugins {
 using mavlink::common::MAV_FRAME;
 /**
- * @brief KrisoStatusPlugin plugin.
+ * @brief ControlCmdToVccPlugin plugin.
  */
+// 
+//  Controller에서 전송하는 control_cmd_to_vcc 메시지를 수신하여 GCS로 전송하는 Plugin
 class ContolCmdToVccPlugin : public plugin::PluginBase {
 public:
 	ContolCmdToVccPlugin() : PluginBase(),
@@ -75,6 +77,7 @@ private:
 	// 	UAS_GCS(m_uas)->send_message_ignore_drop(hState);
 	// }
 
+	// control_cmd_to_vcc 메시지를 수신하여 GCS로 전송. /kriso/control_cmd_to_vcc topic으로 전송한다.
 	void control_cmd_to_vcc_cb(const kriso_msgs::ControlcmdtoVcc::ConstPtr &req){
 		//10Hz로 수신하여 GCS로 전송
 		mavlink::kriso::msg::KRISO_CONTROL_COMMAND_TO_VCC kCmdToVcc{};

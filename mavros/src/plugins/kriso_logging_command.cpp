@@ -28,6 +28,7 @@ namespace std_plugins {
  *
  *
  */
+// logging_cmd 메시지를 QGC로부터 받아서 ROS로 전송하는 Plugin
 class LoggingCommandPlugin : public plugin::PluginBase {
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -68,6 +69,7 @@ private:
 
 	/* -*- message handlers -*- */
 
+	// logging_cmd 메시지를 QGC로부터 받아서 ROS로 전송하는 함수. /kriso/logging_cmd topic으로 전송한다.
 	void handle_logging_command(const mavlink::mavlink_message_t *msg, mavlink::kriso::msg::KRISO_ROS_LOG_COMMAND
  &command)
 	{

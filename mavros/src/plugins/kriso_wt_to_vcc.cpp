@@ -25,6 +25,7 @@ using mavlink::common::MAV_FRAME;
 /**
  * @brief KrisoStatusPlugin plugin.
  */
+// wt_to_vcc 메시지를 GCS로 전송하는 Plugin
 class WtToVccPlugin : public plugin::PluginBase {
 public:
 	WtToVccPlugin() : PluginBase(),
@@ -75,6 +76,7 @@ private:
 	// 	UAS_GCS(m_uas)->send_message_ignore_drop(hState);
 	// }
 
+	// wt_to_vcc 메시지를 수신하여 GCS로 전송. /kriso/wt_to_vcc topic으로부터 수신한다.
 	void wt_to_vcc_cb(const kriso_msgs::WTtoVcc::ConstPtr &req){
 		//10Hz로 수신하여 GCS로 전송
 		mavlink::kriso::msg::KRISO_WT_TO_VCC kStatus{};

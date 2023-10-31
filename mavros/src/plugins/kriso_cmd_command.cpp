@@ -28,6 +28,7 @@ namespace std_plugins {
  *
  *
  */
+// cmd_to_controller 메시지를 QGC로부터 받아서 ROS로 전송하는 Plugin
 class CmdCommandPlugin : public plugin::PluginBase {
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -67,7 +68,7 @@ private:
 	ros::Publisher qgc_to_ros_pub;
 
 	/* -*- message handlers -*- */
-
+	// QGC에서 수신한 메시지를 ROS로 전송. /kriso/cmd_to_controller topic으로 전송한다.
 	void handle_cmd_command(const mavlink::mavlink_message_t *msg, mavlink::kriso::msg::KRISO_CONTROL_COMMAND &command)
 	{
 		auto data = boost::make_shared<kriso_msgs::CmdtoController>();

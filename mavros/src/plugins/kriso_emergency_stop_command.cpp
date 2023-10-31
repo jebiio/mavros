@@ -28,6 +28,7 @@ namespace std_plugins {
  *
  *
  */
+// 긴급정지 메시지 emergency_stop_cmd를 QGC로부터 받아서 ROS로 전송하는 Plugin
 class EmergencyStopCommandPlugin : public plugin::PluginBase {
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -68,6 +69,7 @@ private:
 
 	/* -*- message handlers -*- */
 
+	// 긴급정지 메시지를 QGC로부터 수신하여 ROS로 전송. /kriso/emergency_stop_cmd topic으로 전송
 	void handle_emergency_stop_command(const mavlink::mavlink_message_t *msg, mavlink::kriso::msg::KRISO_EMERGENCY_COMMAND
  &command)
 	{

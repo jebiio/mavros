@@ -32,6 +32,7 @@ namespace std_plugins {
  *
  *
  */
+//  QGC로부터 받은 메시지를 ROS로 전송하는 Plugin의 기본 형태 정의
 class QgcToRosPlugin : public plugin::PluginBase {
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -71,7 +72,7 @@ private:
 	ros::Publisher qgc_to_ros_pub;
 
 	/* -*- message handlers -*- */
-
+	// 이런식으로 ROS 내부로 publish한다는 것을 보여주는 예시
 	void handle_qgc_data(const mavlink::mavlink_message_t *msg, mavlink::kriso::msg::KRISO_STATUS &data)
 	{
 		auto data2 = boost::make_shared<mavros_msgs::KrisoStatus>();
