@@ -7,47 +7,23 @@ from kriso_msgs.msg import MiddlewareToVcc as MiddlewareToVcc
 from kriso_msgs.msg import ToCooperation as ToCooperation
 
 # middleware_msg = MiddlewareToVcc()
-serial_msg = ToCooperation()
+# coop_msg = ToCooperation()
 
-def callback_subscribe(msg):
+def callback_middleware(msg):
+    # make ToCooperation msg from MiddlewareToVcc msg
+    # fields of MiddlewareToVcc msg
+    # create ToCooperation msg
+    coop_msg = ACMParser.getMsg(msg)
+    # publish ToCooperation msg
+    pub.publish(coop_msg)
     pass
 
 
 def talker():
-    sub = rospy.Subscriber('/kriso/middleware_to_vcc', MiddlewareToVcc, callback_subscribe)
+    sub = rospy.Subscriber('/kriso/middleware_to_vcc', MiddlewareToVcc, callback_middleware)
     pub = rospy.Publisher('/kriso/to_cooperation', ToCooperation, queue_size=10)
     rospy.init_node('acm_to_serial', anonymous=True)
     rate = rospy.Rate(10) # 1hz
-    # msg = MiddlewareToVcc()
-
-    # msg.nav_mode     = 1
-    # msg.nav_roll     = 0.1
-    # msg.nav_pitch    = 0.2
-    # msg.nav_yaw      = 10.0
-    # msg.nav_yaw_rate = 0.4
-    # msg.nav_cog      = 0.5
-    # msg.nav_sog      = 0.6
-    # msg.nav_uspd     = 0.7
-    # msg.nav_vspd     = 0.8
-    # msg.nav_wspd     = 0.9
-    # msg.nav_vspd     = 0.8
-    # msg.nav_wspd     = 0.9
-    # msg.nav_longitude= 126.6250512
-    # msg.nav_latitude = 37.175871
-    # msg.nav_heave    = 1.0
-    # msg.nav_gpstime  = 1.1
-    # msg.wea_airtem   = 2.1
-    # msg.wea_wattem   = 3.1
-    # msg.wea_press    = 4.1
-    # msg.wea_relhum   = 5.1
-    # msg.wea_dewpt    = 6.1
-    # msg.wea_windirt  = 7.1
-    # msg.wea_winspdt  = 8.1
-    # msg.wea_windirr  = 9.1
-    # msg.wea_watspdr  = 10.1
-    # msg.wea_watdir   = 11.1
-    # msg.wea_watspd   = 12.1
-    # msg.wea_visibiran= 13.1
 
     while not rospy.is_shutdown():
         # rospy.loginfo(msg)
