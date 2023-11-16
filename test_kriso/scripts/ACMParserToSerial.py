@@ -4,10 +4,10 @@
 
 import rospy
 from kriso_msgs.msg import MiddlewareToVcc as MiddlewareToVcc
-from kriso_msgs.msg import AcmToSerial as AcmToSerial
+from kriso_msgs.msg import ToCooperation as ToCooperation
 
-middleware_msg = MiddlewareToVcc()
-serial_msg = AcmToSerial()
+# middleware_msg = MiddlewareToVcc()
+serial_msg = ToCooperation()
 
 def callback_subscribe(msg):
     pass
@@ -15,8 +15,8 @@ def callback_subscribe(msg):
 
 def talker():
     sub = rospy.Subscriber('/kriso/middleware_to_vcc', MiddlewareToVcc, callback_subscribe)
-    pub = rospy.Publisher('/kriso/acm_msg', AcmToSerial, queue_size=10)
-    rospy.init_node('acm_parser_to_serial', anonymous=True)
+    pub = rospy.Publisher('/kriso/to_cooperation', ToCooperation, queue_size=10)
+    rospy.init_node('acm_to_serial', anonymous=True)
     rate = rospy.Rate(10) # 1hz
     # msg = MiddlewareToVcc()
 
