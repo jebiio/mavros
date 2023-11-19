@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
-# 실행 방법 : > roslaunch test_kriso kriso_test.launch msg:=ACMParserToSerial.py
+# 실행 방법 : > roslaunch test_kriso kriso_test.launch msg:=ACMParserFromSerial.py
 
 import rospy
+from comm_module import Cooperation_Communication_Parser, Rx_Message , Tx_Message, UsvStickMode, WaypointMode, EmergencyMode
+ 
 from kriso_msgs.msg import FromCooperation as FromCooperation
-from kriso_msgs.msg import CmdToController as CmdToController
+from kriso_msgs.msg import CmdtoController as CmdToController
 from kriso_msgs.msg import WtToController as WtToController
 from kriso_msgs.msg import MtCmd as MtCmd
 
@@ -12,10 +14,34 @@ from kriso_msgs.msg import MtCmd as MtCmd
 serial_msg = FromCooperation()
 
 def callback_from_cooperation(msg):
-    pub_cmd_to_controller.publish(cmd)
-    pub_mt_cmd.publish(mt)
+    parser = Cooperation_Communication_Parser()
+    parser.parse_rx_packet(msg.packet)
 
-def publish_stick_mode():
+    if parser.stick_mode is not None:
+        publish_stick_mode(parser.stick_mode)
+        ros.loginfo("stick_mode")
+    if parser.waypoint_mode is not None:
+        publish_waypoint_mode(parser.waypoint_mode)
+        ros.loginfo("waypoint_mode")
+    if parser.emergency_mode is not None:
+        publish_emergency_mode(parser.emergency_mode)
+        ros.loginfo("emergency_mode")
+
+    # msg.packet을 parse해서 
+    # acm_parser = ACMParser(msg.packet)
+    # acm_parser.parse()
+    # if acm_parser.stick_mode is not None:
+    #     publish_stick_mode()
+    # elif acm_parser.waypoint_mode is not None:
+    #     publish_waypoint_mode()
+    # elif acm_parser.emergency_mode is not None:
+    #     publish_emergency_mode()
+    # else:
+    #     print("Nothing to publish")
+    # pub_cmd_to_controller.publish(cmd)
+    # pub_mt_cmd.publish(mt)
+
+def publish_stick_mode(stick_mode):
     cmd = CmdToController()
     cmd.oper_mode = 2
     cmd.mission_mode = 6
@@ -24,35 +50,35 @@ def publish_stick_mode():
     mt.start = 0
     mt.t1_rpm = 0
     mt.t2_rpm = 0
-    mt.t3_rpm = throttle * 1800/100
-    mt.t3_angle = roll
-    mt.t4_rpm = throttle * 1800/100
-    mt.t4_angle = roll
+    mt.t3_rpm = stick_mode.raw_stick_throttle_cmd * 1800/100
+    mt.t3_angle = stick_mode.raw_stick_roll_cmd
+    mt.t4_rpm = stick_mode.raw_stick_throttle_cmd * 1800/100
+    mt.t4_angle = stick_mode.raw_stick_roll_cmd
 
     pub_cmd_to_controller.publish(cmd)
     pub_mt_cmd.publish(mt)
 
 
-def publish_waypoint_mode():
+def publish_waypoint_mode(waypoint_mode):
     cmd = CmdToController()
     cmd.oper_mode = 2
     cmd.mission_mode = 7
     cmd.ca_mode = 1
 
     wt = WtToController()
-    wt.global_path[0].longitude = lat
-    wt.global_path[0].latitude = lon
-    wt.global_path[0].speed = speed
+    wt.global_path[0].latitude = waypoint_mode.raw_target_waypoint_position_lat
+    wt.global_path[0].longitude = waypoint_mode.raw_target_waypoint_position_lon
+    wt.global_path[0].speed = waypoint_mode.raw_maximum_speed
     wt.nav_surge_pgain = 1
     wt.nav_surge_dgain = 1
     wt.nav_yaw_pgain = 1
     wt.nav_yaw_dgain = 1
-    wt.count = =1
+    wt.count = 1
 
     pub_cmd_to_controller.publish(cmd)
     pub_wt_to_controller.publish(wt)
 
-def publish_emergency_mode():
+def publish_emergency_mode(emergency_mode):
     cmd = CmdToController()
     cmd.oper_mode = 2
     cmd.mission_mode = 8
@@ -78,36 +104,6 @@ def talker():
 
     rospy.init_node('acm_to_serial', anonymous=True)
     rate = rospy.Rate(10) # 1hz
-    # msg = MiddlewareToVcc()
-
-    # msg.nav_mode     = 1
-    # msg.nav_roll     = 0.1
-    # msg.nav_pitch    = 0.2
-    # msg.nav_yaw      = 10.0
-    # msg.nav_yaw_rate = 0.4
-    # msg.nav_cog      = 0.5
-    # msg.nav_sog      = 0.6
-    # msg.nav_uspd     = 0.7
-    # msg.nav_vspd     = 0.8
-    # msg.nav_wspd     = 0.9
-    # msg.nav_vspd     = 0.8
-    # msg.nav_wspd     = 0.9
-    # msg.nav_longitude= 126.6250512
-    # msg.nav_latitude = 37.175871
-    # msg.nav_heave    = 1.0
-    # msg.nav_gpstime  = 1.1
-    # msg.wea_airtem   = 2.1
-    # msg.wea_wattem   = 3.1
-    # msg.wea_press    = 4.1
-    # msg.wea_relhum   = 5.1
-    # msg.wea_dewpt    = 6.1
-    # msg.wea_windirt  = 7.1
-    # msg.wea_winspdt  = 8.1
-    # msg.wea_windirr  = 9.1
-    # msg.wea_watspdr  = 10.1
-    # msg.wea_watdir   = 11.1
-    # msg.wea_watspd   = 12.1
-    # msg.wea_visibiran= 13.1
 
     while not rospy.is_shutdown():
         # rospy.loginfo(msg)

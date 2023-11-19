@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# 실행 방법 : > roslaunch test_kriso kriso_test.launch msg:=DPVccPublish.py
+# 실행 방법 : > roslaunch test_kriso kriso_test.launch msg:=MiddlewareStatusPublish.py
 
 import rospy
 from mavros.utils import *
