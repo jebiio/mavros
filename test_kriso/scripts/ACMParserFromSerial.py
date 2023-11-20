@@ -7,11 +7,14 @@ from comm_module import Cooperation_Communication_Parser, Rx_Message , Tx_Messag
  
 from kriso_msgs.msg import FromCooperation as FromCooperation
 from kriso_msgs.msg import CmdtoController as CmdToController
-from kriso_msgs.msg import WtToController as WtToController
-from kriso_msgs.msg import MtCmd as MtCmd
+from kriso_msgs.msg import WTtoController as WtToController
+from kriso_msgs.msg import MTCmd as MtCmd
 
 # middleware_msg = MiddlewareToVcc()
 serial_msg = FromCooperation()
+pub_cmd_to_controller = rospy.Publisher('/kriso/cmdtocontroller', CmdToController, queue_size=10)
+pub_mt_cmd = rospy.Publisher('/kriso/mt_cmd', MtCmd, queue_size=10)
+pub_wt_to_controller = rospy.Publisher('/kriso/wt_to_controller', WtToController, queue_size=10)
 
 def callback_from_cooperation(msg):
     parser = Cooperation_Communication_Parser()
@@ -19,13 +22,13 @@ def callback_from_cooperation(msg):
 
     if parser.stick_mode is not None:
         publish_stick_mode(parser.stick_mode)
-        ros.loginfo("stick_mode")
+        rospy.loginfo("stick_mode")
     if parser.waypoint_mode is not None:
         publish_waypoint_mode(parser.waypoint_mode)
-        ros.loginfo("waypoint_mode")
+        rospy.loginfo("waypoint_mode")
     if parser.emergency_mode is not None:
         publish_emergency_mode(parser.emergency_mode)
-        ros.loginfo("emergency_mode")
+        rospy.loginfo("emergency_mode")
 
     # msg.packet을 parse해서 
     # acm_parser = ACMParser(msg.packet)
@@ -66,9 +69,9 @@ def publish_waypoint_mode(waypoint_mode):
     cmd.ca_mode = 1
 
     wt = WtToController()
-    wt.global_path[0].latitude = waypoint_mode.raw_target_waypoint_position_lat
-    wt.global_path[0].longitude = waypoint_mode.raw_target_waypoint_position_lon
-    wt.global_path[0].speed = waypoint_mode.raw_maximum_speed
+    wt.global_path[0].lat = waypoint_mode.raw_target_waypoint_position_lat
+    wt.global_path[0].lon = waypoint_mode.raw_target_waypoint_position_lon
+    wt.global_path[0].spd_cmd = waypoint_mode.raw_maximum_speed_cmd
     wt.nav_surge_pgain = 1
     wt.nav_surge_dgain = 1
     wt.nav_yaw_pgain = 1
@@ -97,13 +100,13 @@ def publish_emergency_mode(emergency_mode):
 
 def talker():
     sub = rospy.Subscriber('/kriso/from_cooperation', FromCooperation, callback_from_cooperation)
-    pub = rospy.Publisher('/kriso/to_cooperation', ToCooperation, queue_size=10)
-    pub_cmd_to_controller = rospy.Publisher('/kriso/cmdtocontroller', CmdToController, queue_size=10)
-    pub_mt_cmd = rospy.Publisher('/kriso/mt_cmd', MtCmd, queue_size=10)
-    pub_wt_to_controller = rospy.Publisher('/kriso/wt_to_controller', WtToController, queue_size=10)
+
+    # pub_cmd_to_controller = rospy.Publisher('/kriso/cmdtocontroller', CmdToController, queue_size=10)
+    # pub_mt_cmd = rospy.Publisher('/kriso/mt_cmd', MtCmd, queue_size=10)
+    # pub_wt_to_controller = rospy.Publisher('/kriso/wt_to_controller', WtToController, queue_size=10)
 
     rospy.init_node('acm_to_serial', anonymous=True)
-    rate = rospy.Rate(10) # 1hz
+    rate = rospy.Rate(1) # 1hz
 
     while not rospy.is_shutdown():
         # rospy.loginfo(msg)

@@ -7,8 +7,8 @@ from kriso_msgs.msg import FromCooperation as FromCooperation
 
 def talker():
     pub = rospy.Publisher('/kriso/from_cooperation', FromCooperation, queue_size=10)
-    rospy.init_node('acm_to_serial', anonymous=True)
-    rate = rospy.Rate(10) # 1hz
+    rospy.init_node('acm_fromserial_publish', anonymous=True)
+    rate = rospy.Rate(2) # 1hz
     count = 1
     while not rospy.is_shutdown():
         coop_msg = FromCooperation()
@@ -25,7 +25,7 @@ def talker():
         # serial_msg = ACMParser(middleware_msg) 
         # pub.publish(serial_msg)
         # msg.roll += 0.1;
-
+        count = count + 1
         pub.publish(coop_msg)
         rate.sleep()
 

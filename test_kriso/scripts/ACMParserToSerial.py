@@ -49,7 +49,7 @@ def talker():
         # pub.publish(to_coop_msg)
         # # msg.roll += 0.1;
 
-        rate.sleep(1)
+        rate.sleep()
 
 if __name__ == '__main__':
     try:
