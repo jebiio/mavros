@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-#!/usr/bin/env python3
+
 import rospy
 from comm_module import Cooperation_Communication_Parser, Rx_Message , Tx_Message, UsvStickMode, WaypointMode, EmergencyMode
 from kriso_msgs.msg import ToCooperation as ToCooperation

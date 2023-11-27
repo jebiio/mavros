@@ -396,6 +396,24 @@ class Cooperation_Communication_Parser(object):
                 return False
         return True
 
+class ConverterTool:
+    def __init__(self) -> None:
+        pass
+    def convert_angle(self, kriso_angle):
+        if kriso_angle > 180:
+            kriso_angle = kriso_angle - 360
+        elif kriso_angle < -180:
+            kriso_angle = kriso_angle + 360
+        return np.uint16((kriso_angle+180)*65535/360)
+
+    def convert_latlon(self, kriso_latlon):
+        return np.int32(kriso_latlon*10000000)
+
+    def convert_altitude(self, kriso_heave):
+        return np.uint16((kriso_heave+100)*65535/1100)
+
+    def convert_speed(self, kriso_sog):
+        return kriso_sog*0.5144*10
 
 # uint8 nav_mode          # 항법모드 (single/RTK/INS)
 # float32 nav_roll        # degree roll
