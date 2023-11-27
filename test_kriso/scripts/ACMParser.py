@@ -27,6 +27,10 @@ pub_to_acm = rospy.Publisher('/kriso/to_cooperation', ToCooperation, queue_size=
 def from_acm_callback(msg):
     global echo_packet
     parser = Cooperation_Communication_Parser()
+    if parser.check_header(msg.packet) == False:
+        print('Header or checksum is not valid!!')
+        return
+
     parser.parse_rx_packet(msg.packet)
     echo_packet = msg.packet[0:32]
 
@@ -115,7 +119,9 @@ def to_acm_timer_callback(event):
             tx_msg.yaw = converter.convert_angle(received_middleware_msg.nav_yaw)
             tx_msg.uv_position_lat = converter.convert_latlon(received_middleware_msg.nav_latitude)
             tx_msg.uv_position_lon = converter.convert_latlon(received_middleware_msg.nav_longitude)
-            # tx_msg.uv_ground_speed = ??
+            tx_msg.uv_altitude = converter.convert_altitude(received_middleware_msg.nav_heave)
+            tx_msg.uv_ground_speed = converter.convert_speed(received_middleware_msg.nav_sog)
+            tx_msg.course_heading = converter.convert_angle(received_middleware_msg.nav_cog)
             # tx_msg.build_packet(echo_back)
             
             coop_msg = ToCooperation()

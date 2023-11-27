@@ -246,8 +246,8 @@ class Tx_Message(object):
         self.roll = 0
         self.pitch = -180
         self.yaw = 0
-        self.uv_position_lat = 123.45678
-        self.uv_position_lon =  32.12345
+        self.uv_position_lat = 12345678
+        self.uv_position_lon =  3212345
         self.uv_ground_speed = 23.4
         self.simulator = 1
         self.system_status = 1
@@ -266,17 +266,17 @@ class Tx_Message(object):
         self.packet[33] = self.num_sat
         # print('roll origin :', self.roll)
         # print('build roll :', self.get_range(int((self.roll + 180) / 0.00549), 0, 0xffff))
-        self.packet[34:36] = struct.pack(">H", self.get_range(int((self.roll + 180) / 0.00549), 0, 0xffff))
-        self.packet[36:38] = struct.pack(">H", self.get_range(int((self.pitch + 180) / 0.00549), 0, 0xffff))
-        self.packet[38:40] = struct.pack(">H", self.get_range(int((self.yaw + 180) / 0.00549), 0, 0xffff))
+        self.packet[34:36] = struct.pack(">H", np.uint16(self.roll)) # self.packet[34:36] = struct.pack(">H", self.get_range(int((self.roll + 180) / 0.00549), 0, 0xffff))
+        self.packet[36:38] = struct.pack(">H",np.uint16(self.pitch)) # self.packet[36:38] = struct.pack(">H", self.get_range(int((self.pitch + 180) / 0.00549), 0, 0xffff))
+        self.packet[38:40] = struct.pack(">H", np.uint16(self.yaw)) # self.packet[38:40] = struct.pack(">H", self.get_range(int((self.yaw + 180) / 0.00549), 0, 0xffff))
         
         # print('lon : ', self.uv_position_lon, ' ', np.int32(self.uv_position_lon * 10000000))
-        self.packet[40:44] = struct.pack(">l", np.int32(self.uv_position_lat * 10000000))
-        self.packet[44:48] = struct.pack(">l", np.int32(self.uv_position_lon * 10000000))
+        self.packet[40:44] = struct.pack(">l", np.int32(self.uv_position_lat)) # self.packet[40:44] = struct.pack(">l", np.int32(self.uv_position_lat * 10000000))
+        self.packet[44:48] = struct.pack(">l", np.int32(self.uv_position_lon)) # self.packet[44:48] = struct.pack(">l", np.int32(self.uv_position_lon * 10000000))
         # self.packet[48:50] = struct.pack(">H", self.get_range(int((self.uv_altitude +100) / 0.0168), 0, 0xffff))
         # self.packet[48:50] = int.to_bytes(int(self.uav_altitude * 100), 2, 'big')   
-        self.packet[50] = int(self.uv_ground_speed * 10)
-        self.packet[51:53] = struct.pack(">H", self.get_range(int((self.course_heading+180)/0.00549), 0, 0xffff))#int.to_bytes(int(self.course_heading+180)/0.00549, 2, 'big') 
+        self.packet[50] = self.uv_ground_speed
+        self.packet[51:53] = struct.pack(">H", np.uint16(self.course_heading)) # self.packet[51:53] = struct.pack(">H", self.get_range(int((self.course_heading+180)/0.00549), 0, 0xffff))#int.to_bytes(int(self.course_heading+180)/0.00549, 2, 'big') 
 
         self.packet[53] = self.simulator << 7
         self.packet[54] = self.system_status << 7 | self.emergency_status << 6
@@ -323,6 +323,8 @@ class Cooperation_Communication_Parser(object):
         self.waypoint_mode = None
         self.end_operation_mode = None
         self.emergency_mode = None
+        self.rx_header_check_rule = {0:[0xAA], 1:[0x55], 2:[22], 8:[0], 9:[1], 10:[1, 2, 255]}
+
     
     def build_tx_packet(self, loopback_echo, tx_msg) -> bytearray(63):
         tx_packet = bytearray(63)
@@ -387,10 +389,10 @@ class Cooperation_Communication_Parser(object):
             return True
         return False
 
-    def check_header(self, packet, rule):
-        check_index = rule.keys()
+    def check_header(self, packet):
+        check_index = self.rx_header_check_rule.keys()
         for i in check_index:
-            if packet[i] in rule[i]:
+            if packet[i] in self.rx_header_check_rule[i]:
                 pass
             else:
                 return False
@@ -413,7 +415,7 @@ class ConverterTool:
         return np.uint16((kriso_heave+100)*65535/1100)
 
     def convert_speed(self, kriso_sog):
-        return kriso_sog*0.5144*10
+        return np.uint8(kriso_sog*0.5144*10)
 
 # uint8 nav_mode          # 항법모드 (single/RTK/INS)
 # float32 nav_roll        # degree roll
