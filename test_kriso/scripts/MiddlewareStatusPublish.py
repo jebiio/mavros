@@ -9,7 +9,7 @@ from kriso_msgs.msg import MiddlewareToVcc as MiddlewareToVcc
 def talker():
     pub = rospy.Publisher('/kriso/middleware_to_vcc', MiddlewareToVcc, queue_size=10)
     rospy.init_node('test_kriso_middleware_to_vcc', anonymous=True)
-    rate = rospy.Rate(1) # 1hz
+    rate = rospy.Rate(20) # 1hz
     msg = MiddlewareToVcc()
 
     msg.nav_mode     = 1
