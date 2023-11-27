@@ -20,7 +20,7 @@ git checkout kriso_ros1_2023
 # ./pre_install.sh
 
 cd ~/mavros2023_ws/src
-git clone https://jeyong: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@github.com/jebiio/mavlink_kriso.git mavlink
+git clone https://jeyong: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@github.com/jebiio/mavlink_kriso.git mavlink
 cd mavlink
 git checkout kriso2023
 
