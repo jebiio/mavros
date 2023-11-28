@@ -116,7 +116,7 @@ class EndOperationModeData(object):
         self.target_waypoint_position_longitude = 0
         pass
     def parse_raw(self, packet) -> None:
-        self.raw_target_waypoint_position_lati = struct.unpack(">l", packet[21:25])[0] 
+        self.raw_target_waypoint_position_latitude = struct.unpack(">l", packet[21:25])[0] 
         self.raw_target_waypoint_position_longitude = struct.unpack(">l", packet[25:29])[0]
     def parse(self, packet) -> None:
         self.target_waypoint_position_latitude = int.from_bytes(packet[21:25], 'big', signed=True)
