@@ -20,7 +20,6 @@ pub_wt_to_controller = rospy.Publisher('/kriso/wt_to_controller', WtToController
 received_message = False
 received_middleware_msg = None
 last_message_time = rospy.Time()
-# pub_to_vcc = rospy.Publisher('/kriso/to_cooperation', ToCooperation, queue_size=10) 
 pub_to_acm = rospy.Publisher('/kriso/to_cooperation', ToCooperation, queue_size=10) 
 
 
@@ -72,8 +71,8 @@ def publish_waypoint_mode(waypoint_mode):
     cmd.ca_mode = 1
 
     wt = WtToController()
-    wt.global_path[0].lat = waypoint_mode.raw_target_waypoint_position_lat
-    wt.global_path[0].lon = waypoint_mode.raw_target_waypoint_position_lon
+    wt.global_path[0].lat = waypoint_mode.raw_target_waypoint_position_lat # / 10000000 해줘야할듯.
+    wt.global_path[0].lon = waypoint_mode.raw_target_waypoint_position_lon # / 10000000 해줘야할듯.
     wt.global_path[0].spd_cmd = waypoint_mode.raw_maximum_speed_cmd
     wt.nav_surge_pgain = 1
     wt.nav_surge_dgain = 1
@@ -109,7 +108,7 @@ def to_acm_timer_callback(event):
 
     if received_middleware_msg:
         current_time = rospy.Time.now()
-        if (current_time - last_message_time).to_sec() < 1.0: # 2초 이내 들어오는 경우만 보내기
+        if (current_time - last_message_time).to_sec() < 1.0: # 1초 이내 들어오는 경우만 보내기
             # Publish the message if the last message was received within the last second
             rospy.loginfo('MiddlewareToVcc received!')
             converter = ConverterTool()
@@ -142,9 +141,6 @@ def middleware_callback(msg):
 if __name__ == '__main__':
     rospy.init_node('acm_parser')
     rate = rospy.Rate(5)  # 5 Hz fixed rate
-
-    # pub_to_vcc = rospy.Publisher('/fixed_topic', std_msgs.msg.Float32, queue_size=10)
-    # pub_to_acm = rospy.Publisher('/fixed_topic', std_msgs.msg.Float32, queue_size=10)
 
     sub_from_acm = rospy.Subscriber('/kriso/from_cooperation', FromCooperation, from_acm_callback)
     sub_middleware = rospy.Subscriber('/kriso/middleware_to_vcc', MiddlewareToVcc, middleware_callback)

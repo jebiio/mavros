@@ -58,18 +58,6 @@ class UsvStickMode(object):
         self.stick_pitch_cmd = int.from_bytes(packet[13:15], 'big')# self.stick_pitch_cmd = int.from_bytes(packet[13:15], 'big') * 0.00015
         self.stick_throttle_cmd = int.from_bytes(packet[15:17], 'big') * 0.00015
         self.stick_rudder_cmd = packet[17]
-    def make_cmdtocontroller(self):
-        cmd_msg = CmdtoController()
-        cmd_msg.operation_mode = 2
-        cmd_msg.mission_mode = 6
-        return cmd_msg
-    def make_mtcmd(self):
-        mt_msg = MTCmd()
-        mt_msg.t3_rpm = self.stick_throttle_cmd * 1800/ 100
-        mt_msg.t3_angle = self.stick_roll_cmd
-        mt_msg.t4_rpm = self.stick_throttle_cmd * 1800/ 100
-        mt_msg.t4_angle = self.stick_roll_cmd
-        return mt_msg
 
 class WaypointMode(object):
     def __init__(self) -> None:
@@ -105,22 +93,6 @@ class WaypointMode(object):
         packet[2:4] = int.to_bytes(self.maximum_speed_cmd, 2, 'big')
         packet[4:6] = int.to_bytes(self.heading_angle_cmd, 2, 'big')
         return packet
-    def make_cmdtocontroller(self):
-        cmd_msg = CmdtoController()
-        cmd_msg.operation_mode = 2
-        cmd_msg.mission_mode = 7
-        return cmd_msg
-    def make_wttocontroller(self):
-        wt_msg = WTtoController()
-        wt_msg.global_path[0].lat = self.target_waypoint_position_lat
-        wt_msg.global_path[0].lon = self.target_waypoint_position_lon
-        wt_msg.global_path[0].spd = self.maximum_speed_cmd
-        wt_msg.nav_surge_pgain = 1
-        wt_msg.nav_surge_dgain = 1
-        wt_msg.nav_yaw_pgain = 1
-        wt_msg.nav_yaw_dgain = 1
-        wt_msg.count = 1
-        return wt_msg
     
 class EmergencyMode(object):
     def __init__(self) -> None:
@@ -135,14 +107,6 @@ class EmergencyMode(object):
         packet = bytearray(10)
         packet[0] = self.current_operation_mode
         return packet
-    def make_cmdtocontroller(self):
-        cmd_msg = CmdtoController()
-        cmd_msg.operation_mode = 2
-        cmd_msg.mission_mode = 8
-        return cmd_msg
-    def make_mtcmd(self):
-        mt_msg = MTCmd()
-        return mt_msg
 
 class EndOperationModeData(object):
     def __init__(self) -> None:
@@ -219,7 +183,7 @@ class Tx_Message(object):
         self.system_current1 = 0.0
         self.system_voltage2 = 0.0
         self.system_current2 = 0.0
-        self.checksum = 0
+        # self.checksum = 0
 
     def add_header(self):
         self.packet[0] = 0xAA
@@ -235,13 +199,6 @@ class Tx_Message(object):
     def add_echo_back(self, rx_packet):
         self.packet[10:32] = rx_packet[10:32]
 
-    def get_range(self, value, min, max):
-        if value < min:
-            return min
-        elif value > max:
-            return max
-        else:
-            return value
     def set_fields(self):
         self.roll = 0
         self.pitch = -180
