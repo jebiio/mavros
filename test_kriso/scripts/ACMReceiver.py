@@ -24,7 +24,7 @@ def check_packet(packet):
     if struct.unpack(">H", packet[34:36])[0] != 0: # roll
         print("roll is not valid")
         return False
-    if struct.unpack(">H", packet[36:38])[0] != : 32767#pitch
+    if struct.unpack(">H", packet[36:38])[0] != 32767:#pitch
         print("pitch is not valid")
         return False
     if struct.unpack(">H", packet[38:40])[0] != 0xffff: # yaw
