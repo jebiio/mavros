@@ -13,18 +13,18 @@ def talker():
     msg = MiddlewareToVcc()
 
     msg.nav_mode     = 1
-    msg.nav_roll     = 0.1
-    msg.nav_pitch    = 0.2
-    msg.nav_yaw      = 10.0
+    msg.nav_roll     = -180
+    msg.nav_pitch    = 0
+    msg.nav_yaw      = 180
     msg.nav_yaw_rate = 0.4
-    msg.nav_cog      = 0.5
-    msg.nav_sog      = 0.6
+    msg.nav_cog      = -180
+    msg.nav_sog      = 10
     msg.nav_uspd     = 0.7
     msg.nav_vspd     = 0.8
     msg.nav_wspd     = 0.9
-    msg.nav_longitude= 126.6250512
-    msg.nav_latitude = 37.175871
-    msg.nav_heave    = 1.0
+    msg.nav_longitude= 123.1234567
+    msg.nav_latitude = 32.1234567
+    msg.nav_heave    = 10
     msg.nav_gpstime  = 1.1
     msg.wea_airtem   = 2.1
     msg.wea_wattem   = 3.1
