@@ -38,6 +38,9 @@ def check_packet(packet):
         print("longitude is not valid")
         return False
 
+    if struct.unpack(">H", packet[48:50])[0] != 6553:
+        print("altitude is not valid")
+        return False
     if packet[50] != 51: # ground_speed
         print("ground_speed is not valid")
         return False
