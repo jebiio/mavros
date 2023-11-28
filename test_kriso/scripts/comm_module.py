@@ -231,7 +231,7 @@ class Tx_Message(object):
         self.packet[40:44] = struct.pack(">l", np.int32(self.uv_position_lat)) # self.packet[40:44] = struct.pack(">l", np.int32(self.uv_position_lat * 10000000))
         self.packet[44:48] = struct.pack(">l", np.int32(self.uv_position_lon)) # self.packet[44:48] = struct.pack(">l", np.int32(self.uv_position_lon * 10000000))
         # self.packet[48:50] = struct.pack(">H", self.get_range(int((self.uv_altitude +100) / 0.0168), 0, 0xffff))
-        # self.packet[48:50] = int.to_bytes(int(self.uav_altitude * 100), 2, 'big')   
+        self.packet[48:50] = struct.pack(">H", np.uint16(self.uv_altitude))# self.packet[48:50] = int.to_bytes(int(self.uav_altitude * 100), 2, 'big')   
         self.packet[50] = self.uv_ground_speed
         self.packet[51:53] = struct.pack(">H", np.uint16(self.course_heading)) # self.packet[51:53] = struct.pack(">H", self.get_range(int((self.course_heading+180)/0.00549), 0, 0xffff))#int.to_bytes(int(self.course_heading+180)/0.00549, 2, 'big') 
 

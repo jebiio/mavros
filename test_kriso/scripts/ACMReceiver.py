@@ -7,7 +7,7 @@
 import rospy
 from comm_module import Cooperation_Communication_Parser, Rx_Message , Tx_Message, UsvStickMode, WaypointMode, EmergencyMode
 from kriso_msgs.msg import ToCooperation as ToCooperation
-
+import struct 
 
 def callback_receive(msg):
     if msg.length == 63:
@@ -20,7 +20,7 @@ def callback_receive(msg):
 def check_packet(packet):
     if packet[0] == 0xAA and packet[1] == 0x55:
         print("Header is valid")
-    
+    struct.unpack(">H", packet[48:50])[0]
     if struct.unpack(">H", packet[34:36])[0] != 0: # roll
         print("roll is not valid")
         return False
@@ -32,21 +32,22 @@ def check_packet(packet):
         return False
      
     if struct.unpack(">l", packet[40:44])[0] != 1231234567: # latitude
-        print("latitude is not valid")
+        print("latitude is not valid: expected : ", 1231234567, "but : ", struct.unpack(">l", packet[40:44])[0])
         return False
     if struct.unpack(">l", packet[44:48])[0] != 321234567: # longitude
         print("longitude is not valid")
         return False
 
     if struct.unpack(">H", packet[48:50])[0] != 6553:
-        print("altitude is not valid")
+        print("altitude is not valid. expected : ", 6553, "but :", struct.unpack(">H", packet[48:50])[0])
         return False
     if packet[50] != 51: # ground_speed
         print("ground_speed is not valid")
         return False
     if struct.unpack(">H", packet[51:53])[0] != 0xffff: # course_heading
-        print("course_heading is not valid")
-        return False    
+        print("course_heading is not valid expected : ", 0xffff, "but :", struct.unpack(">H", packet[51:53])[0])
+        return False
+    print("tx packet is expected!!")    
 
 
 def talker():
