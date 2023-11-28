@@ -71,8 +71,8 @@ def publish_waypoint_mode(waypoint_mode):
     cmd.ca_mode = 1
 
     wt = WtToController()
-    wt.global_path[0].lat = waypoint_mode.raw_target_waypoint_position_lat # / 10000000 해줘야할듯.
-    wt.global_path[0].lon = waypoint_mode.raw_target_waypoint_position_lon # / 10000000 해줘야할듯.
+    wt.global_path[0].lat = waypoint_mode.raw_target_waypoint_position_lat /10000000# / 10000000 해줘야할듯.
+    wt.global_path[0].lon = waypoint_mode.raw_target_waypoint_position_lon /10000000# / 10000000 해줘야할듯.
     wt.global_path[0].spd_cmd = waypoint_mode.raw_maximum_speed_cmd
     wt.nav_surge_pgain = 1
     wt.nav_surge_dgain = 1

@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
+
+# 실행 방법 : > roslaunch test_kriso kriso_test.launch msg:=ACMSender.py
+# ACMParser : > roslaunch test_kriso kriso_test.launch msg:=ACMParser.py
+
 import rospy
 from comm_module import Cooperation_Communication_Parser, Rx_Message , Tx_Message, UsvStickMode, WaypointMode, EmergencyMode
 from kriso_msgs.msg import FromCooperation as FromCooperation
 import struct 
-# 실행 방법 : > roslaunch test_kriso kriso_test.launch msg:=ACMSender.py
+import numpy as np
 
 PACKET_HEADER1 = 0
 PACKET_HEADER2 = 1
@@ -61,7 +65,7 @@ def make_stick():
     packet[15:17] = struct.pack(">H", np.uint16(3)) # throttle
     packet[17] = 4 # rudder
 
-    packet[32:34] = struct.pack(">H", np.uint16(sum(self.packet[2:32])))
+    packet[32:34] = struct.pack(">H", np.uint16(sum(packet[2:32])))
     return packet
 
 def make_waypoint():
@@ -84,7 +88,7 @@ def make_waypoint():
     packet[21:25] = struct.pack(">l", np.int32(1281234567)) # target_waypoint_position_lat
     packet[25:29] = struct.pack(">l", np.int32(321234567)) # target_waypoint_position_lon
     
-    packet[32:34] = struct.pack(">H", np.uint16(sum(self.packet[2:32])))
+    packet[32:34] = struct.pack(">H", np.uint16(sum(packet[2:32])))
     return packet
 
 def make_emergency():
@@ -103,7 +107,7 @@ def make_emergency():
 
     packet[11] = 1 # 0: hovering, 1: return home
 
-    packet[32:34] = struct.pack(">H", np.uint16(sum(self.packet[2:32])))
+    packet[32:34] = struct.pack(">H", np.uint16(sum(packet[2:32])))
     return packet
 
 if __name__ == '__main__':
