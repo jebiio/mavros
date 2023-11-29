@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 # 실행 방법 : > roslaunch test_kriso kriso_test.launch msg:=ACMParser.py
+# rosserial 실행 : rosrun rosserial_python serial_node.py _port:=/dev/ttyUSB0 _baud:=57600
 
 import rospy
 from comm_module import Cooperation_Communication_Parser, Rx_Message , Tx_Message, UsvStickMode, WaypointMode, EmergencyMode, ConverterTool
@@ -22,17 +23,16 @@ received_middleware_msg = None
 last_message_time = rospy.Time()
 pub_to_acm = rospy.Publisher('/kriso/to_cooperation', ToCooperation, queue_size=10) 
 
-
 def from_acm_callback(msg):
     global echo_packet
     parser = Cooperation_Communication_Parser()
     if parser.check_header(msg.packet) == False:
-        print('Header or checksum is not valid!!')
+        print('Header is not valid!!')
         return
-
-    parser.parse_rx_packet(msg.packet)
+    # for test msg.packet[32:34] == cal_chk_sum(msg.packet[2:32]):
+    # parser.parse_rx_packet(msg.packet)  KRISO 디버깅
     echo_packet = msg.packet[0:32]
-
+    print(msg.packet)
     if parser.stick_mode is not None:
         publish_stick_mode(parser.stick_mode)
         rospy.loginfo("stick_mode")

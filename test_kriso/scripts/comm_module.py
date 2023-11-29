@@ -196,6 +196,7 @@ class Tx_Message(object):
         self.packet[7] = 0
         self.packet[8] = 0
         self.packet[9] = 101
+
     def add_echo_back(self, rx_packet):
         self.packet[10:32] = rx_packet[10:32]
 
@@ -243,14 +244,19 @@ class Tx_Message(object):
         self.packet[58:60] = struct.pack(">H", np.uint16(self.system_voltage2 * 100)) #int.to_bytes(int(self.system_voltage2 * 100), 2, 'big')    
         self.packet[60] = int(self.system_current2 * 10)
 
-        self.packet[61:63] = struct.pack(">H", np.uint16(sum(self.packet[2:61])))
+        self.packet[61:63] = self.cal_chk_sum(self.packet[2:61])# self.packet[61:63] = struct.pack(">H", np.uint16(sum(self.packet[2:61])))
         # self.packet[61:63] = self.checksum(self.packet)
         # self.packet[61:63] = np.uint16(self.checksum(self.packet))
         return self.packet 
 
-    def checksum(self, packet):
-        return sum(packet[2:61])
+    def cal_chk_sum(self, payload):
+        checksum = sum(payload)
+        a = checksum >> 8 
+        b = checksum & 0xFF
+        checksum = bytes([a,b])
+        return checksum 
     
+
     def fromBuffer(self, buf): # for test
         self.marker_detected = buf[32]
         self.num_sat = buf[33]
@@ -280,7 +286,7 @@ class Cooperation_Communication_Parser(object):
         self.waypoint_mode = None
         self.end_operation_mode = None
         self.emergency_mode = None
-        self.rx_header_check_rule = {0:[0xAA], 1:[0x55], 2:[22], 8:[0], 9:[1], 10:[1, 2, 255]}
+        self.rx_header_check_rule = {0:[0xAA], 1:[0x55], 2:[22]} # self.rx_header_check_rule = {0:[0xAA], 1:[0x55], 2:[22], 8:[0], 9:[1], 10:[1, 2, 255]} 
 
     
     def build_tx_packet(self, loopback_echo, tx_msg) -> bytearray(63):
@@ -336,13 +342,21 @@ class Cooperation_Communication_Parser(object):
         self.target_waypoint_position_lat = packet[21:25]
         self.target_waypoint_position_lon = packet[25:29]
 
-        if self.checksum(packet[2:32], packet[32:34]) == False:
+        if self.check_crc(packet[2:32], packet[32:34]) == False:
+            print('CRC Error!')
             msg.error_code = RX_CHECKSUM_ERROR
 
         return msg
 
-    def checksum(self, payload, checksum_part):
-        if int.from_bytes(checksum_part, byteorder="big", signed=False) == sum(payload) :
+    def cal_chk_sum(self, payload):
+        checksum = sum(payload)
+        a = checksum >> 8 
+        b = checksum & 0xFF
+        checksum = bytes([a,b])
+        return checksum 
+
+    def check_crc(self, payload, checksum_part):
+        if self.cal_chk_sum(payload) == checksum_part :
             return True
         return False
 
@@ -352,6 +366,7 @@ class Cooperation_Communication_Parser(object):
             if packet[i] in self.rx_header_check_rule[i]:
                 pass
             else:
+                # print('check_header index : ', i , ' value : ', packet[i])  # KRISO 디버깅
                 return False
         return True
 
