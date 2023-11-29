@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 # 실행 방법 : > roslaunch test_kriso kriso_test.launch msg:=ACMParser.py
+# usb 권한 : > sudo chmod 777 /dev/ttyUSB0
 # rosserial 실행 : rosrun rosserial_python serial_node.py _port:=/dev/ttyUSB0 _baud:=57600
 
 import rospy
