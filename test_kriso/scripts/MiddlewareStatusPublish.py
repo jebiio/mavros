@@ -22,8 +22,8 @@ def talker():
     msg.nav_uspd     = 0.7
     msg.nav_vspd     = 0.8
     msg.nav_wspd     = 0.9
-    msg.nav_longitude= 32.1234567
-    msg.nav_latitude = 123.1234567
+    msg.nav_longitude= 127.20776
+    msg.nav_latitude = 34.60873 
     msg.nav_heave    = 10
     msg.nav_gpstime  = 1.1
     msg.wea_airtem   = 2.1

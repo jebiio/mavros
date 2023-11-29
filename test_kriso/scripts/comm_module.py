@@ -366,7 +366,7 @@ class Cooperation_Communication_Parser(object):
             if packet[i] in self.rx_header_check_rule[i]:
                 pass
             else:
-                # print('check_header index : ', i , ' value : ', packet[i])  # KRISO 디버깅
+                print('check_header index : ', i , ' value : ', packet[i])  # KRISO 디버깅
                 return False
         return True
 

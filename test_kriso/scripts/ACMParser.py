@@ -14,7 +14,7 @@ from kriso_msgs.msg import ToCooperation as ToCooperation
 from kriso_msgs.msg import MiddlewareToVcc as MiddlewareToVcc
 
 echo_packet = bytearray(32)
-pub_cmd_to_controller = rospy.Publisher('/kriso/cmdtocontroller', CmdToController, queue_size=10)
+pub_cmd_to_controller = rospy.Publisher('/kriso/cmd_to_controller', CmdToController, queue_size=10)
 pub_mt_cmd = rospy.Publisher('/kriso/mt_cmd', MtCmd, queue_size=10)
 pub_wt_to_controller = rospy.Publisher('/kriso/wt_to_controller', WtToController, queue_size=10)
 
@@ -30,8 +30,9 @@ def from_acm_callback(msg):
         print('Header is not valid!!')
         return
     # for test msg.packet[32:34] == cal_chk_sum(msg.packet[2:32]):
-    # parser.parse_rx_packet(msg.packet)  KRISO 디버깅
+    parser.parse_rx_packet(msg.packet) # KRISO 디버깅
     echo_packet = msg.packet[0:32]
+    print('operation mode : ', msg.packet[10] )
     print(msg.packet)
     if parser.stick_mode is not None:
         publish_stick_mode(parser.stick_mode)

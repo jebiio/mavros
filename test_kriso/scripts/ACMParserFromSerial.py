@@ -12,7 +12,7 @@ from kriso_msgs.msg import MTCmd as MtCmd
 
 # middleware_msg = MiddlewareToVcc()
 serial_msg = FromCooperation()
-pub_cmd_to_controller = rospy.Publisher('/kriso/cmdtocontroller', CmdToController, queue_size=10)
+pub_cmd_to_controller = rospy.Publisher('/kriso/cmd_to_controller', CmdToController, queue_size=10)
 pub_mt_cmd = rospy.Publisher('/kriso/mt_cmd', MtCmd, queue_size=10)
 pub_wt_to_controller = rospy.Publisher('/kriso/wt_to_controller', WtToController, queue_size=10)
 
