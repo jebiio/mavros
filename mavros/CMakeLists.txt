@@ -164,6 +164,7 @@ add_library(mavros_plugins
   src/plugins/kriso_middleware_ais.cpp
   src/plugins/kriso_control_cmd_to_vcc.cpp
   src/plugins/kriso_mt_command.cpp
+  src/plugins/kriso_plc_to_vcc.cpp
   # src/plugins/kriso_qgc_to_ros.cpp
 )
 

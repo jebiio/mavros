@@ -136,6 +136,9 @@
   <class name="kriso_mt_command" type="mavros::std_plugins::MtCommandPlugin" base_class_type="mavros::plugin::PluginBase">
     <description>Send to ROS. KRISO Motor Command To Vcc</description>
   </class>
+  <class name="kriso_plc_to_vcc" type="mavros::std_plugins::PlcToVccPlugin" base_class_type="mavros::plugin::PluginBase">
+    <description>Send to GCS. KRISO PLC to Vcc</description>
+  </class>
   <!-- <class name="kriso_qgc_to_ros" type="mavros::std_plugins::QgcToRosPlugin" base_class_type="mavros::plugin::PluginBase">
     <description>Send to ROS KRISO Data</description>
   </class>
