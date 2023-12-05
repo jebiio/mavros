@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# 실행 방법 : > roslaunch test_kriso kriso_test.launch msg:=WTCommandReceiver.py
+
 import threading
 import socket
 import rospy
@@ -11,7 +13,7 @@ import struct
 waypoint_format = 'ddff'
 waypoint_control_format = waypoint_format*100 + '4fB'
 IP_ADDRESS = '127.0.0.1'
-PORT = 20001
+PORT = 20222
 
 pub = rospy.Publisher('/kriso/wt_to_controller', WTtoController, queue_size=10)
 
@@ -45,9 +47,8 @@ def parse_waypoint_control(data):
     }
 
 def receive_udp():
-    # udp server 생성 : ip주소는 192.168.0.2, port는 20001
+    # udp server 생성 : ip주소는 192.168.0.2, port는 20222
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    # udp ip 주소는 "127.0.0.1"이고 port는 20001
     sock.bind((IP_ADDRESS, PORT))
 
     # 데이터 받기
@@ -56,7 +57,13 @@ def receive_udp():
         print(len(data))
         wt = WTtoController()
         result = parse_waypoint_control(data)
-        wt.global_path = result['global_path']
+        # result['global_path']를 wt.global_path에 복사하기
+        global_paths = result['global_path']
+        for i in range(len(global_paths)):
+            wt.global_path[i].lat = global_paths[i]['lat']
+            wt.global_path[i].lon = global_paths[i]['lon']
+            wt.global_path[i].spd_cmd = global_paths[i]['spd_cmd']
+            wt.global_path[i].acceptance_radius = global_paths[i]['acceptance_radius']    
         wt.nav_surge_pgain = result['nav_surge_pgain']
         wt.nav_surge_dgain = result['nav_surge_dgain']
         wt.nav_yaw_pgain = result['nav_yaw_pgain']
@@ -73,6 +80,8 @@ def talker():
     
     while not rospy.is_shutdown():
         rate.sleep()
+    # thread close
+    udp_thread.join()
 
 if __name__ == '__main__':
     try:
