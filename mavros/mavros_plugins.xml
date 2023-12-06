@@ -121,9 +121,9 @@
     <description>Send to GCS. KRISO WtToVcc</description>
   </class>
 
-  <class name="kriso_wt_command" type="mavros::std_plugins::WtCommandPlugin" base_class_type="mavros::plugin::PluginBase">
+  <!-- <class name="kriso_wt_command" type="mavros::std_plugins::WtCommandPlugin" base_class_type="mavros::plugin::PluginBase">
     <description>Send to ROS. KRISO WtCommand</description>
-  </class>
+  </class> -->
   <class name="kriso_logging_status" type="mavros::std_plugins::LoggingStatusPlugin" base_class_type="mavros::plugin::PluginBase">
     <description>Send to GCS. KRISO Logging Status</description>
   </class>
