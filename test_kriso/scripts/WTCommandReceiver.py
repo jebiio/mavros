@@ -13,7 +13,7 @@ import struct
 waypoint_format = 'ddff'
 waypoint_control_format = waypoint_format*100 + '4fB'
 IP_ADDRESS = '127.0.0.1'
-PORT = 20222
+PORT = 5000
 
 pub = rospy.Publisher('/kriso/wt_to_controller', WTtoController, queue_size=10)
 
