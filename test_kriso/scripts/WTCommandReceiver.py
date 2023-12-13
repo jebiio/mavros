@@ -55,6 +55,11 @@ def receive_udp():
     while True:
         data, addr = sock.recvfrom(6000)
         print(len(data))
+        if len(data) == 2424:
+            data = data[:len(data)-7]
+        elif len(data) != 2417:
+            print("Packet length should be 2417 bytes, but it is ", len(data), " !!! Packet length is wrong!")
+            continue
         wt = WTtoController()
         result = parse_waypoint_control(data)
         # result['global_path']를 wt.global_path에 복사하기
