@@ -49,7 +49,7 @@ def parse_waypoint_control(data):
 def receive_udp():
     # udp server 생성 : ip주소는 192.168.0.2, port는 20222
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.bind((IP_ADDRESS, PORT))
+    sock.bind(('', PORT)) #sock.bind((IP_ADDRESS, PORT)) INADDR_ANY
 
     # 데이터 받기
     while True:
